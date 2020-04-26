@@ -3,31 +3,39 @@
 <Sidebar @ref="AppStore.Sidebar">
 	<SidebarContent>
 		<SidebarBrand>
-			Community Italy
+			<SidebarLink>
+				<div>
+					<svg xmlns="http://www.w3.org/2000/svg" width="42" height="28" viewBox="0 0 3 2">
+						<rect width="3" height="2" fill="#009246" />
+						<rect width="2" height="2" x="1" fill="#fff" />
+						<rect width="1" height="2" x="2" fill="#ce2b37" />
+					</svg>
+					<span style="vertical-align:top">Community Italy</span>
+				</div>
+			</SidebarLink>
 		</SidebarBrand>
 		<SidebarNavigation>
-			<SidebarLabel>Community Italy</SidebarLabel>
 			<SidebarItem>
 				<SidebarLink To="@Routes.Home()" Title="Home">
-					<Icon Name="IconName.SliderHorizontal" Margin="Margin.Is3.FromRight" />Home
+					<Icon Name="@("event")" Margin="Margin.Is3.FromRight" />Home
 				</SidebarLink>
 			</SidebarItem>
 			<SidebarItem>
 				<SidebarLink Toggled="(isOpen)=> eventsSubItems.Toggle(isOpen)" IsShow="true">
-					<Icon Name="IconName.Mail" Margin="Margin.Is3.FromRight" />Eventi
+					<Icon Name="@("event_note")" Margin="Margin.Is3.FromRight" />Eventi
 				</SidebarLink>
 				<SidebarSubItem @ref="eventsSubItems" IsShow="true" >
 					<SidebarLink To="@Routes.EventList()" Title="Eventi">
-						<Icon Name="IconName.Dashboard" Margin="Margin.Is3.FromRight" /> Event
+						<Icon Name="@("event")" Margin="Margin.Is3.FromRight" /> Eventi
 					</SidebarLink>
 					<SidebarLink To="@Routes.EventReports()" Title="Ricerca">
-						<Icon Name="IconName.Dashboard" Margin="Margin.Is3.FromRight" /> Ricerca
+						<Icon Name="@("report")" Margin="Margin.Is3.FromRight" /> Ricerca
 					</SidebarLink>
 				</SidebarSubItem>
 			</SidebarItem>
 			<SidebarItem>
 				<SidebarLink To="@Routes.CommunityList()" Title="Community">
-					<Icon Name="IconName.Dashboard" Margin="Margin.Is3.FromRight" /> Community
+					<Icon Name="@("group")" Margin="Margin.Is3.FromRight" /> Community
 				</SidebarLink>
 			</SidebarItem>
 		</SidebarNavigation>

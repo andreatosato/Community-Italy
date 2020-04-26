@@ -18,8 +18,6 @@
 						</BarLink>
 					</BarItem>
 				</BarBrand>
-				@*<BarToggler Clicked="@ToggleSidebar">
-				</BarToggler>*@
 				<BarMenu>					
 					<BarEnd>						
 						<BarItem>
@@ -30,6 +28,11 @@
 			</Bar>
 		</LayoutHeader>
 		<LayoutContent Padding="Padding.Is4.OnX">
+			<Breadcrumb Mode="BreadcrumbMode.Auto">
+				<BreadcrumbItem>
+					<BreadcrumbLink To="">Home</BreadcrumbLink>
+				</BreadcrumbItem>
+			</Breadcrumb>
 			@Body
 			<Snackbar @ref="AppStore.Notification.Snackbar">
 				<SnackbarBody>
