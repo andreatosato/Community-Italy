@@ -6,46 +6,65 @@
 			<span>Lista Eventi</span>
 		</div>
 		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="text-align:right;">
-			<MatButton OnClick="Create" Label="Crea evento" Icon="@MatIconNames.Create"></MatButton>
+			<Button OnClick="Create">
+				<Icon Name="IconName.Dashboard"></Icon> Crea evento
+			</Button>
 		</div>
 	</div>
 </div>
 
-<MatTable Items="@EventViewModels" Striped="true" ShowPaging="false" SortBy="StartDate" class="mat-elevation-z5">
-	<MatTableHeader>
-		<th width="20%">Name</th>
-		<th width="10%">Start Date</th>
-		<th width="10%">End Date</th>
-		<th width="35%">Community</th>
-		<th width="10%">Tickets</th>
-		<th>Actions</th>
-	</MatTableHeader>
-	<MatTableRow>
-		<td>@context.Name</td>
-		<td>@context.StartDate.ToString("d")</td>
-		<td>@context.EndDate.ToString("d")</td>
-		<td>@context.Community?.Name</td>
-		<td>
-			@if (!string.IsNullOrEmpty(context.BuyTicket))
-			{
-				<MatIconButton Link="@context.BuyTicket" Target="_blank">
-					<MatIcon>@MatIconNames.Link</MatIcon>
-				</MatIconButton>
-			}
-		</td>
-		<td>
-			<div style="display:block;">
-				<MatIconButton OnClick="@(() => Edit(context))">
-					<MatIcon>@MatIconNames.Edit</MatIcon>
-				</MatIconButton>
 
-				<MatIconButton OnClick="@(() => Delete(context.Id))">
-					<MatIcon>@MatIconNames.Delete</MatIcon>
-				</MatIconButton>
-			</div>
-		</td>
-	</MatTableRow>
-</MatTable>
-<div>
-	<MatPaginator Length="@Total" PageSize="@PageSize" Page="@OnPage"></MatPaginator>
-</div>
+<DataGrid TItem="EventViewModelReadOnly"
+		  Data="@EventViewModels"
+		  ReadData="@LoadDataAsync"
+		  TotalItems="@Total" 
+		  ShowPager="true" 
+		  PageSize="@PageSize" 
+		  CurrentPage="@PageIndex">
+	<DataGridColumns>
+		<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.Name)" Caption="Name" Sortable="false"></DataGridColumn>
+	</DataGridColumns>
+</DataGrid>
+
+@*<Table Striped="true" FullWidth="true">
+	<TableHeader ThemeContrast="ThemeContrast.Dark">
+		<TableRow>
+			<TableHeaderCell width="20%">Name</TableHeaderCell>
+			<TableHeaderCell width="10%">Start Date</TableHeaderCell>
+			<TableHeaderCell width="10%">End Date</TableHeaderCell>
+			<TableHeaderCell width="35%">Community</TableHeaderCell>
+			<TableHeaderCell width="10%">Tickets</TableHeaderCell>
+			<TableHeaderCell>#</TableHeaderCell>
+		</TableRow>
+	</TableHeader>
+	<TableBody>
+		@foreach (var context in EventViewModels)
+		{
+			<TableRow>
+				<td>@context.Name</td>
+				<td>@context.StartDate.ToString("d")</td>
+				<td>@context.EndDate.ToString("d")</td>
+				<td>@context.Community?.Name</td>
+				<td>
+					@if (!string.IsNullOrEmpty(context.BuyTicket))
+					{
+						<Link To="@context.BuyTicket" Target="Target.Blank">
+							<Icon Name="link"></Icon>
+						</Link>
+					}
+				</td>
+				<td>
+					<div style="display:block;">
+
+						<Button Clicked="@(() => Edit(context))">
+							<Icon Name="edit"></Icon>
+						</Button>
+						<Button Clicked="@(() => Delete(context.Id))">
+							<Icon Name="delete"></Icon>
+						</Button>
+					</div>
+				</td>
+			</TableRow>
+		}
+	</TableBody>	
+</Table>*@

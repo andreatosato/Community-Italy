@@ -1,92 +1,44 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
-<MatAppBarContainer>
-	<MatAppBar Fixed="true">
-		<MatAppBarRow>
-			<MatAppBarSection>
-				<div class="hidden-mdc-down">
-					<MatTooltip Tooltip="Toggle Menu">
-						<MatIconButton Class="navToggle" Icon="menu" ToggleIcon="menu" OnClick="@((e) => NavToggle())" RefBack="@context"></MatIconButton>
-					</MatTooltip>
-				</div>
-				<MatAppBarTitle>
-					Community Italy
-				</MatAppBarTitle>
-			</MatAppBarSection>
-			<MatAppBarSection Align="@MatAppBarSectionAlign.End">
-				<MatTooltip Tooltip="Github Repository">
-					<MatIconButton Link="https://github.com/andreatosato/Community-Italy" Target="_blank" RefBack="@context">
-						<i class="fab fa-github" aria-hidden="true"></i>
-					</MatIconButton>
-				</MatTooltip>
-			</MatAppBarSection>
-		</MatAppBarRow>
-	</MatAppBar>
-	<MatAppBarContent>
-		<MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="@bbDrawerClass">
-			<MatDrawer Opened="@_navMenuOpened">
-				<NavMenu />
-				<footer class="drawer-footer">
-					<MatTooltip Tooltip="Help">
-						<MatButton Icon="help" RefBack="@context" Link="https://github.com/andreatosato/Community-Italy">
-							<span class="miniHover">Help & Support</span>
-						</MatButton>
-					</MatTooltip>
-				</footer>
-			</MatDrawer>
 
-			<MatDrawerContent>
-				<section class="container-fluid">
-					@Body
-				</section>
-			</MatDrawerContent>
-		</MatDrawerContainer>
-	</MatAppBarContent>
-</MatAppBarContainer>
+<Layout Sider="true">
+	<LayoutSider>
+		<LayoutSiderContent>
+			<NavMenu></NavMenu>
+		</LayoutSiderContent>
+	</LayoutSider>
+	<Layout>
+		<LayoutHeader Fixed="true">
+			<Bar Style="height: 64px;" Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Light">
+				<BarBrand>
+					<BarItem>
+						<BarLink To="">
+							<Icon Name="IconName.Dashboard" />
+							Community Italy
+						</BarLink>
+					</BarItem>
+				</BarBrand>
+				@*<BarToggler Clicked="@ToggleSidebar">
+				</BarToggler>*@
+				<BarMenu>					
+					<BarEnd>						
+						<BarItem>
+							<BarLink To="https://github.com/andreatosato/Community-Italy" target="_blank"><i class="fab fa-github" aria-hidden="true"></i></BarLink>
+						</BarItem>
+					</BarEnd>
+				</BarMenu>
+			</Bar>
+		</LayoutHeader>
+		<LayoutContent Padding="Padding.Is4.OnX">
+			@Body
+			<Snackbar @ref="AppStore.Notification.Snackbar">
+				<SnackbarBody>
+					<span>@AppStore.Notification.Body</span>
+					Single line of text directly related to the operation performed
+				</SnackbarBody>
+				<SnackbarAction Clicked="@(()=>AppStore.Notification.Snackbar.Hide())"><Icon Name="IconName.Clear"></Icon></SnackbarAction>
+			</Snackbar>
+		</LayoutContent>
+	</Layout>
+</Layout>
 
-
-@code {
-	bool _navMenuOpened = false;
-	bool _navMinified = false;
-
-	public string bbDrawerClass = "";
-
-	void NavToggle()
-	{
-		_navMenuOpened = !_navMenuOpened;
-		if (_navMenuOpened)
-		{
-			bbDrawerClass = "full";
-		}
-		else
-		{
-			bbDrawerClass = "closed";
-		}
-
-		this.StateHasChanged();
-	}
-
-	void NavMinify()
-	{
-		_navMinified = !_navMinified;
-
-		if (!_navMenuOpened)
-		{
-			_navMinified = true;
-		}
-
-		if (_navMinified)
-		{
-			bbDrawerClass = "mini";
-			_navMenuOpened = true;
-		}
-		else if (_navMenuOpened)
-		{
-			bbDrawerClass = "full";
-		}
-
-		_navMenuOpened = true;
-		this.StateHasChanged();
-	}
-
-}

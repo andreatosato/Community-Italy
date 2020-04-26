@@ -1,33 +1,46 @@
-﻿@using Microsoft.AspNetCore.Components;
-@inject NavigationManager navigationManager
+﻿@inject NavigationManager navigationManager
 
-    <MatNavMenu Multi="true" Class="app-sidebar">
-       
-        <MatNavItem Href="@navigationManager.ToAbsoluteUri(" ").AbsoluteUri" NavLinkMatch="NavLinkMatch.All">
-            <MatIcon>home</MatIcon> <span class="miniHover">Home</span>
-        </MatNavItem>
+<Sidebar @ref="AppStore.Sidebar">
+	<SidebarContent>
+		<SidebarBrand>
+			Community Italy
+		</SidebarBrand>
+		<SidebarNavigation>
+			<SidebarLabel>Community Italy</SidebarLabel>
+			<SidebarItem>
+				<SidebarLink To="@Routes.Home()" Title="Home">
+					<Icon Name="IconName.SliderHorizontal" Margin="Margin.Is3.FromRight" />Home
+				</SidebarLink>
+			</SidebarItem>
+			<SidebarItem>
+				<SidebarLink Toggled="(isOpen)=> eventsSubItems.Toggle(isOpen)" IsShow="true">
+					<Icon Name="IconName.Mail" Margin="Margin.Is3.FromRight" />Eventi
+				</SidebarLink>
+				<SidebarSubItem @ref="eventsSubItems" IsShow="true" >
+					<SidebarLink To="@Routes.EventList()" Title="Eventi">
+						<Icon Name="IconName.Dashboard" Margin="Margin.Is3.FromRight" /> Event
+					</SidebarLink>
+					<SidebarLink To="@Routes.EventReports()" Title="Ricerca">
+						<Icon Name="IconName.Dashboard" Margin="Margin.Is3.FromRight" /> Ricerca
+					</SidebarLink>
+				</SidebarSubItem>
+			</SidebarItem>
+			<SidebarItem>
+				<SidebarLink To="@Routes.CommunityList()" Title="Community">
+					<Icon Name="IconName.Dashboard" Margin="Margin.Is3.FromRight" /> Community
+				</SidebarLink>
+			</SidebarItem>
+		</SidebarNavigation>
+	</SidebarContent>
+</Sidebar>
 
-        <MatNavItem Href="events">
-            <MatIcon>@MatIconNames.Event</MatIcon> <span class="miniHover">Events</span>
-        </MatNavItem>
 
-        <MatDivider></MatDivider>
+@code {
+	SidebarSubItem eventsSubItems;
 
-        <MatNavItem Href="communities">
-            <MatIcon>@MatIconNames.Group</MatIcon> <span class="miniHover">Communities</span>
-        </MatNavItem>
+	void ToggleSidebar()
+	{
+		AppStore.Sidebar.Toggle();
+	}
 
-        <MatNavItem Href="articles" Disabled="true">
-            <MatIcon>@MatIconNames.Create</MatIcon> <span class="miniHover">Articles</span>
-        </MatNavItem>
-
-        <MatNavItem Href="people" Disabled="true">
-            <MatIcon>@MatIconNames.Face</MatIcon> <span class="miniHover">People</span>
-        </MatNavItem>
-
-        <MatDivider></MatDivider>
-
-        <MatNavItem Href="reports">
-            <MatIcon>@MatIconNames.Report</MatIcon> <span class="miniHover">Report</span>
-        </MatNavItem>
-    </MatNavMenu>
+}

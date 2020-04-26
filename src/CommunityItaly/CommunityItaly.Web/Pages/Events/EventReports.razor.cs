@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CommunityItaly.Web.Pages.Reports
 {
-	public partial class ReportList : ComponentBase
+	public partial class EventReports : ComponentBase
 	{
 		[Inject]
 		IHttpServices Http { get; set; }

@@ -1,5 +1,4 @@
-<MatToastContainer />
-<MatThemeProvider Theme="@AppStore.Tema">
+<Blazorise.ThemeProvider Theme="@AppStore.Tema">
 	<Router AppAssembly="@typeof(Program).Assembly">
 		<Found Context="routeData">
 			<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -10,16 +9,5 @@
 			</LayoutView>
 		</NotFound>
 	</Router>
-</MatThemeProvider>
+</Blazorise.ThemeProvider>
 
-	@code {
-
-		[Inject]
-		public IMatToaster toaster { get; set; }
-
-		protected override void OnInitialized()
-		{
-			base.OnInitialized();
-			AppStore.SetToaster(toaster);
-		}
-	}

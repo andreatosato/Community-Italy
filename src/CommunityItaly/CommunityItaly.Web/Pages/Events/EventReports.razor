@@ -1,8 +1,8 @@
-﻿@page "/reports"
+﻿@page "/EventReports"
 <h3>Reports</h3>
 
 
-<div class="mat-layout-grid">
+@*<div class="mat-layout-grid">
 	<div class="mat-layout-grid-inner">
 		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
 			<MatDatePicker Label="Start Date" @bind-Value="Search.StartDate" FullWidth="true" />
@@ -17,10 +17,10 @@
 			<MatButton Icon="@MatIconNames.Import_export" Raised="true" OnClick="Export">Export</MatButton>
 		</div>
 	</div>
-</div>
+</div>*@
 
 
-@foreach (var e in ReportLists)
+@*@foreach (var e in ReportLists)
 {
 	<MatCard class="demo-mat-card">
 		<MatCardContent>
@@ -54,7 +54,7 @@
 @if (ManagerIsOpen)
 {
 	<CommunityItaly.Web.Components.People.PersonModal IsOpen="ManagerIsOpen" PersonData="ManagerSelected" OnConfirm="ManagerOnConfirm"></CommunityItaly.Web.Components.People.PersonModal>
-}
+}*@
 
 <style>
 	.demo-mat-card {

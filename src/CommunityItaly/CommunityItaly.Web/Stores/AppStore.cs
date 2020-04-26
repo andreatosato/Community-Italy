@@ -1,23 +1,17 @@
-﻿using CommunityItaly.Shared.ViewModels;
-using MatBlazor;
+﻿using Blazorise;
+using Blazorise.Sidebar;
+using Blazorise.Snackbar;
+using CommunityItaly.Shared.ViewModels;
 
 namespace CommunityItaly.Web.Stores
 {
 	public static class AppStore
 	{
-		private static IMatToaster _toaster;
-		
-		public static void SetToaster(IMatToaster toaster)
-		{
-			if(_toaster == null)
-			{
-				_toaster = toaster;
-			}
-		}
-
+		public static NotificationUI Notification { get; set; } = new NotificationUI();
+		public static Sidebar Sidebar { get; set; } = new Sidebar();
 		public static void AddNotification(NotificationMessage message)
 		{
-			_toaster.Add(message.Message, (MatToastType)message.NotificationType);
+			Notification.AddMessage(message);
 		}
 
 		public static EventViewModelReadOnly EventEdit { get; set; }
@@ -25,10 +19,14 @@ namespace CommunityItaly.Web.Stores
 		public static FileUploadEntry EventImage { get; set; }
 		public static FileUploadEntry CommunityImage { get; set; }
 
-		public static MatTheme Tema { get; set; } = new MatTheme()
+		public static Theme Tema { get; set; } = new Theme()
 		{
-			Primary = MatThemeColors.Blue._900.Value,
-			Secondary = MatThemeColors.Yellow._500.Value
+			ColorOptions = new ThemeColorOptions
+			{
+				Primary = "#3700B3",
+				Secondary = "#018786",
+			},
+			
 		};
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using CommunityItaly.Shared.ViewModels;
 using CommunityItaly.Web.Services;
 using CommunityItaly.Web.Stores;
-using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,17 +18,17 @@ namespace CommunityItaly.Web.Pages.Events
 		public int PageIndex { get; set; } = 1;
 		public int Total { get; set; }
 
-		protected override async Task OnInitializedAsync()
-		{
-			await LoadDataAsync().ConfigureAwait(false);
-		}
+		//protected override async Task OnInitializedAsync()
+		//{
+		//	//await LoadDataAsync().ConfigureAwait(false);
+		//}
 
-		async Task OnPage(MatPaginatorPageEvent e)
-		{
-			PageSize = e.PageSize;
-			PageIndex = e.PageIndex;
-			await LoadDataAsync().ConfigureAwait(false);
-		}
+		//async Task OnPage(MatPaginatorPageEvent e)
+		//{
+		//	PageSize = e.PageSize;
+		//	PageIndex = e.PageIndex;
+		//	await LoadDataAsync().ConfigureAwait(false);
+		//}
 
 		void Edit(EventViewModelReadOnly args)
 		{
@@ -47,6 +46,8 @@ namespace CommunityItaly.Web.Pages.Events
 			var pagedViewModel = await Http.GetEventsConfirmed(PageSize, PageSize * (PageIndex - 1)).ConfigureAwait(false);
 			EventViewModels = pagedViewModel.Entities;
 			Total = pagedViewModel.Total;
+
+			StateHasChanged();
 		}
 
 		void Create()

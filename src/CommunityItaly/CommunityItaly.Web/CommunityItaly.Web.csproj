@@ -5,12 +5,52 @@
     <RazorLangVersion>3.0</RazorLangVersion>
 	<BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Components\Communities\**" />
+    <Compile Remove="Components\People\**" />
+    <Compile Remove="Pages\Communities\**" />
+    <Compile Remove="Pages\Reports\**" />
+    <Content Remove="Components\Communities\**" />
+    <Content Remove="Components\People\**" />
+    <Content Remove="Pages\Communities\**" />
+    <Content Remove="Pages\Reports\**" />
+    <EmbeddedResource Remove="Components\Communities\**" />
+    <EmbeddedResource Remove="Components\People\**" />
+    <EmbeddedResource Remove="Pages\Communities\**" />
+    <EmbeddedResource Remove="Pages\Reports\**" />
+    <None Remove="Components\Communities\**" />
+    <None Remove="Components\People\**" />
+    <None Remove="Pages\Communities\**" />
+    <None Remove="Pages\Reports\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Events\EventCreate.razor.cs" />
+    <Compile Remove="Pages\Events\EventEdit.razor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Components\DateRange.razor" />
+    <Content Remove="Components\Person.razor" />
+    <Content Remove="Pages\Articles.razor" />
+    <Content Remove="Pages\Counter.razor" />
+    <Content Remove="Pages\Events\EventCreate.razor" />
+    <Content Remove="Pages\Events\EventEdit.razor" />
+    <Content Remove="Pages\FetchData.razor" />
+    <Content Remove="Pages\People.razor" />
+  </ItemGroup>
 		
   <ItemGroup>
     <PackageReference Include="Accelist.FluentValidation.Blazor" Version="2.1.0" />
+    <PackageReference Include="Blazorise.Components" Version="0.9.0.1" />
+    <PackageReference Include="Blazorise.DataGrid" Version="0.9.0.1" />
+    <PackageReference Include="Blazorise.Icons.Material" Version="0.9.0.1" />
+    <PackageReference Include="Blazorise.Material" Version="0.9.0.1" />
+    <PackageReference Include="Blazorise.Sidebar" Version="0.9.0.1" />
+    <PackageReference Include="Blazorise.Snackbar" Version="0.9.0.1" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="8.6.2" />
-    <PackageReference Include="MatBlazor" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.0-preview5.20216.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.0-preview5.20216.8" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.0-preview5.20216.8" PrivateAssets="all" />
@@ -22,6 +62,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\" />
     <Folder Include="wwwroot\default\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Events\EventList.razor" />
   </ItemGroup>
 </Project>
