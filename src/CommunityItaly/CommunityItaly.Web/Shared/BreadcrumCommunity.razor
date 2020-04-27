@@ -1,0 +1,51 @@
+﻿<Breadcrumb Mode="BreadcrumbMode.Auto">
+	@foreach (var item in Links)
+	{
+		<BreadcrumbItem><BreadcrumbLink To="@(item.Key)">@item.Value</BreadcrumbLink></BreadcrumbItem>
+	}
+	@*<BreadcrumbItem><BreadcrumbLink To="">Home</BreadcrumbLink></BreadcrumbItem>
+	<BreadcrumbItem><BreadcrumbLink To="@(BreadCrum.EventList)">Events</BreadcrumbLink></BreadcrumbItem>
+	<BreadcrumbItem><BreadcrumbLink To="@(BreadCrum.EventCreate)">Create</BreadcrumbLink></BreadcrumbItem>
+	<BreadcrumbItem><BreadcrumbLink To="@(BreadCrum.EventEdit)">Edit</BreadcrumbLink></BreadcrumbItem>
+	<BreadcrumbItem><BreadcrumbLink To="@(BreadCrum.EventReport)">Reports</BreadcrumbLink></BreadcrumbItem>
+	<BreadcrumbItem><BreadcrumbLink To="@(BreadCrum.CommunityList)">Community</BreadcrumbLink></BreadcrumbItem>
+	<BreadcrumbItem><BreadcrumbLink To="@(BreadCrum.CommunityCreate)">Create</BreadcrumbLink></BreadcrumbItem>
+	<BreadcrumbItem><BreadcrumbLink To="@(BreadCrum.CommunityEdit)">Edit</BreadcrumbLink></BreadcrumbItem>*@
+</Breadcrumb>
+
+@code {
+	[Inject]
+	NavigationManager nav { get; set; }
+
+	Dictionary<string, string> Links = new Dictionary<string, string>();
+
+	protected override void OnInitialized()
+	{
+		nav.LocationChanged += LocaltionChanged;
+		base.OnInitialized();
+	}
+
+	void LocaltionChanged(object sender, LocationChangedEventArgs locArg)
+	{		
+		string navigationStart = locArg.Location.Replace(nav.BaseUri, "").Split("/").FirstOrDefault();
+		Links.Clear();
+		switch (navigationStart.ToLowerInvariant())
+		{
+			case "event":
+				Links.Add(BreadCrum.EventList, "Events");
+				Links.Add(BreadCrum.EventCreate, "Create");
+				Links.Add(BreadCrum.EventEdit, "Edit");
+				Links.Add(BreadCrum.EventReport, "Reports");
+				break;
+			case "community":
+				Links.Add(BreadCrum.CommunityList, "Community");
+				Links.Add(BreadCrum.CommunityCreate, "Create");
+				Links.Add(BreadCrum.CommunityEdit, "Edit");
+				break;
+			default:
+				Links.Add(BreadCrum.Home, "");
+				break;
+		}
+		this.StateHasChanged();
+	}
+}

@@ -13,7 +13,7 @@
 				<BarBrand>
 					<BarItem>
 						<BarLink To="">
-							<Icon Name="IconName.Dashboard" />
+							<Icon Name="IconName.Dashboard" @onclick="ToggleSidebar" />
 							Community Italy
 						</BarLink>
 					</BarItem>
@@ -21,27 +21,32 @@
 				<BarMenu>					
 					<BarEnd>						
 						<BarItem>
-							<BarLink To="https://github.com/andreatosato/Community-Italy" target="_blank"><i class="fab fa-github" aria-hidden="true"></i></BarLink>
+							<BarLink To="https://github.com/andreatosato/Community-Italy" target="_blank" style="text-align:right;"><i class="fab fa-github" aria-hidden="true"></i></BarLink>
 						</BarItem>
 					</BarEnd>
 				</BarMenu>
 			</Bar>
 		</LayoutHeader>
-		<LayoutContent Padding="Padding.Is4.OnX">
-			<Breadcrumb Mode="BreadcrumbMode.Auto">
-				<BreadcrumbItem>
-					<BreadcrumbLink To="">Home</BreadcrumbLink>
-				</BreadcrumbItem>
-			</Breadcrumb>
-			@Body
-			<Snackbar @ref="AppStore.Notification.Snackbar">
-				<SnackbarBody>
-					<span>@AppStore.Notification.Body</span>
-					Single line of text directly related to the operation performed
-				</SnackbarBody>
-				<SnackbarAction Clicked="@(()=>AppStore.Notification.Snackbar.Hide())"><Icon Name="IconName.Clear"></Icon></SnackbarAction>
-			</Snackbar>
+		<LayoutContent>
+			<BreadcrumCommunity></BreadcrumCommunity>			
+			<Container Padding="Padding.Is4.OnX">
+				@Body
+				<Snackbar @ref="AppStore.Notification.Snackbar">
+					<SnackbarBody>
+						<span>@AppStore.Notification.Body</span>
+						Single line of text directly related to the operation performed
+					</SnackbarBody>
+					<SnackbarAction Clicked="@(()=>AppStore.Notification.Snackbar.Hide())"><Icon Name="IconName.Clear"></Icon></SnackbarAction>
+				</Snackbar>
+			</Container>
+			
 		</LayoutContent>
 	</Layout>
 </Layout>
 
+@code{
+	void ToggleSidebar()
+	{
+		AppStore.Sidebar.Toggle();
+	}
+}

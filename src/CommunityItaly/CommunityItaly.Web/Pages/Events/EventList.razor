@@ -1,70 +1,85 @@
-﻿@page "/events"
+﻿@page "/Event"
 
-<div class="mat-layout-grid">
-	<div class="mat-layout-grid-inner">
-		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-			<span>Lista Eventi</span>
-		</div>
-		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="text-align:right;">
+<Row>
+	<Column ColumnSize="ColumnSize.Is12">
+		<div style="text-align:right;">
 			<Button OnClick="Create">
-				<Icon Name="IconName.Dashboard"></Icon> Crea evento
+			<Icon Name="@("create")"></Icon> Crea evento
 			</Button>
-		</div>
-	</div>
-</div>
+		</div>			
+	</Column>
+</Row>
+<Row>
+	<Column ColumnSize="ColumnSize.Is12">
+		<DataGrid TItem="EventViewModelReadOnly" Data="@EventViewModels" ReadData="@LoadDataAsync" TotalItems="@Total"
+				  ShowPager="true" PageSize="@PageSize" CurrentPage="@PageIndex" Editable="false" Striped="true">
+			<DataGridColumns>
+				<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.Name)" Caption="Name" Sortable="false"></DataGridColumn>
+				<DataGridDateColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.StartDate)" Caption="Da" Sortable="false"></DataGridDateColumn>
+				<DataGridDateColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.EndDate)" Caption="A" Sortable="false"></DataGridDateColumn>
+				<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.BuyTicket)" Caption="Biglietti" Editable="true">
+					<DisplayTemplate>
+						<Link To="@(( context as EventViewModelReadOnly)?.BuyTicket)" Target="Target.Blank"><Icon Name="@("link")"></Icon></Link>
+					</DisplayTemplate>
+				</DataGridColumn>
+				<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.Community)" Caption="Community" Sortable="false">
+					<DisplayTemplate>
+						@($"{context?.Community.Name}")
+					</DisplayTemplate>
+				</DataGridColumn>
+				<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.Id)" Caption="#" Sortable="false">
+					<DisplayTemplate>
+						<Link Clicked="@(() => Edit(context))"><Icon Name="@("edit")"></Icon></Link>
+						<Link Clicked="@(() => Delete(context.Id))"><Icon Name="@("delete")"></Icon></Link>
+					</DisplayTemplate>
+				</DataGridColumn>
+			</DataGridColumns>
+		</DataGrid>
+	</Column>
+</Row>
 
 
-<DataGrid TItem="EventViewModelReadOnly"
-		  Data="@EventViewModels"
-		  ReadData="@LoadDataAsync"
-		  TotalItems="@Total" 
-		  ShowPager="true" 
-		  PageSize="@PageSize" 
-		  CurrentPage="@PageIndex">
-	<DataGridColumns>
-		<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.Name)" Caption="Name" Sortable="false"></DataGridColumn>
-	</DataGridColumns>
-</DataGrid>
+		
 
-@*<Table Striped="true" FullWidth="true">
-	<TableHeader ThemeContrast="ThemeContrast.Dark">
-		<TableRow>
-			<TableHeaderCell width="20%">Name</TableHeaderCell>
-			<TableHeaderCell width="10%">Start Date</TableHeaderCell>
-			<TableHeaderCell width="10%">End Date</TableHeaderCell>
-			<TableHeaderCell width="35%">Community</TableHeaderCell>
-			<TableHeaderCell width="10%">Tickets</TableHeaderCell>
-			<TableHeaderCell>#</TableHeaderCell>
-		</TableRow>
-	</TableHeader>
-	<TableBody>
-		@foreach (var context in EventViewModels)
-		{
-			<TableRow>
-				<td>@context.Name</td>
-				<td>@context.StartDate.ToString("d")</td>
-				<td>@context.EndDate.ToString("d")</td>
-				<td>@context.Community?.Name</td>
-				<td>
-					@if (!string.IsNullOrEmpty(context.BuyTicket))
+		@*<Table Striped="true" FullWidth="true">
+				<TableHeader ThemeContrast="ThemeContrast.Dark">
+					<TableRow>
+						<TableHeaderCell width="20%">Name</TableHeaderCell>
+						<TableHeaderCell width="10%">Start Date</TableHeaderCell>
+						<TableHeaderCell width="10%">End Date</TableHeaderCell>
+						<TableHeaderCell width="35%">Community</TableHeaderCell>
+						<TableHeaderCell width="10%">Tickets</TableHeaderCell>
+						<TableHeaderCell>#</TableHeaderCell>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					@foreach (var context in EventViewModels)
 					{
-						<Link To="@context.BuyTicket" Target="Target.Blank">
-							<Icon Name="link"></Icon>
-						</Link>
-					}
-				</td>
-				<td>
-					<div style="display:block;">
+						<TableRow>
+							<td>@context.Name</td>
+							<td>@context.StartDate.ToString("d")</td>
+							<td>@context.EndDate.ToString("d")</td>
+							<td>@context.Community?.Name</td>
+							<td>
+								@if (!string.IsNullOrEmpty(context.BuyTicket))
+								{
+									<Link To="@context.BuyTicket" Target="Target.Blank">
+										<Icon Name="link"></Icon>
+									</Link>
+								}
+							</td>
+							<td>
+								<div style="display:block;">
 
-						<Button Clicked="@(() => Edit(context))">
-							<Icon Name="edit"></Icon>
-						</Button>
-						<Button Clicked="@(() => Delete(context.Id))">
-							<Icon Name="delete"></Icon>
-						</Button>
-					</div>
-				</td>
-			</TableRow>
-		}
-	</TableBody>	
-</Table>*@
+									<Button Clicked="@(() => Edit(context))">
+										<Icon Name="edit"></Icon>
+									</Button>
+									<Button Clicked="@(() => Delete(context.Id))">
+										<Icon Name="delete"></Icon>
+									</Button>
+								</div>
+							</td>
+						</TableRow>
+					}
+				</TableBody>
+			</Table>*@
