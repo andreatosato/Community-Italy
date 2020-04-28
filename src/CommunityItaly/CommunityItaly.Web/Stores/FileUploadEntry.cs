@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blazorise;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -12,19 +13,19 @@ namespace CommunityItaly.Web.Stores
 		public string Type { get; set; }
 		public MemoryStream StreamData { get; set; }
 
-		//public async Task<FileUploadEntry> FromMat(IMatFileUploadEntry entry)
-		//{
-		//	MemoryStream memory = new MemoryStream();
-		//	await entry.WriteToStreamAsync(memory);
-		//	memory.Position = 0;
-		//	return new FileUploadEntry
-		//	{
-		//		LastModified = entry.LastModified,
-		//		Name = entry.Name,
-		//		Size = entry.Size,
-		//		Type = entry.Type,
-		//		StreamData = memory
-		//	};
-		//}
+		public static async Task<FileUploadEntry> FromBlazorise(IFileEntry entry)
+		{
+			MemoryStream memory = new MemoryStream();
+			await entry.WriteToStreamAsync(memory);
+			memory.Position = 0;
+			return new FileUploadEntry
+			{
+				LastModified = entry.LastModified,
+				Name = entry.Name,
+				Size = entry.Size,
+				Type = entry.Type,
+				StreamData = memory
+			};
+		}
 	}
 }

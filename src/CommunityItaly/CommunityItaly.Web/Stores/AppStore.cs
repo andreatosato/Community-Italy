@@ -26,6 +26,10 @@ namespace CommunityItaly.Web.Stores
 				Primary = "#3700B3",
 				Secondary = "#018786",
 			},
+			BackgroundOptions = new ThemeBackgroundOptions
+			{
+				Primary = "#3700B3",
+			},
 			SidebarOptions = new ThemeSidebarOptions
 			{
 				Color = "#FFFFFF",
