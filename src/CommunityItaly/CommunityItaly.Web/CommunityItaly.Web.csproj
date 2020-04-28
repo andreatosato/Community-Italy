@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Compile Remove="Pages\Events\EventCreate.razor.cs" />
-    <Compile Remove="Pages\Events\EventEdit.razor.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,7 +35,6 @@
     <Content Remove="Pages\Articles.razor" />
     <Content Remove="Pages\Counter.razor" />
     <Content Remove="Pages\Events\EventCreate.razor" />
-    <Content Remove="Pages\Events\EventEdit.razor" />
     <Content Remove="Pages\FetchData.razor" />
     <Content Remove="Pages\People.razor" />
   </ItemGroup>

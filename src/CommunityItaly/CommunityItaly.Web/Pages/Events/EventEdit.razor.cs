@@ -60,10 +60,10 @@ namespace CommunityItaly.Web.Pages.Events
 			}
 		}
 
-		async Task FilesReady(IMatFileUploadEntry[] files)
-		{
-			var image = files.FirstOrDefault();
-			AppStore.EventImage = await new FileUploadEntry().FromMat(image).ConfigureAwait(false);
-		}
+		//async Task FilesReady(IMatFileUploadEntry[] files)
+		//{
+		//	var image = files.FirstOrDefault();
+		//	AppStore.EventImage = await new FileUploadEntry().FromMat(image).ConfigureAwait(false);
+		//}
 	}
 }
