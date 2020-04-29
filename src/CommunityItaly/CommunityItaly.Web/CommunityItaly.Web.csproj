@@ -7,19 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Components\Communities\**" />
     <Compile Remove="Components\People\**" />
     <Compile Remove="Pages\Communities\**" />
     <Compile Remove="Pages\Reports\**" />
-    <Content Remove="Components\Communities\**" />
     <Content Remove="Components\People\**" />
     <Content Remove="Pages\Communities\**" />
     <Content Remove="Pages\Reports\**" />
-    <EmbeddedResource Remove="Components\Communities\**" />
     <EmbeddedResource Remove="Components\People\**" />
     <EmbeddedResource Remove="Pages\Communities\**" />
     <EmbeddedResource Remove="Pages\Reports\**" />
-    <None Remove="Components\Communities\**" />
     <None Remove="Components\People\**" />
     <None Remove="Pages\Communities\**" />
     <None Remove="Pages\Reports\**" />
@@ -60,11 +56,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\" />
     <Folder Include="wwwroot\default\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Components\Communities\CommunitySelect.razor" />
     <None Include="Pages\Events\EventList.razor" />
   </ItemGroup>
 </Project>

@@ -73,6 +73,11 @@ namespace CommunityItaly.Web.Pages.Events
 			}
 		}
 
+		void SelectCommunity(string value)
+		{
+			EventViewModel.Community.ShortName = value;
+		}
+
 		async Task FilesReady(FileChangedEventArgs e)
 		{
 			var image = e.Files.FirstOrDefault();

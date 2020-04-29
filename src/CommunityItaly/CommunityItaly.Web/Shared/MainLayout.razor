@@ -50,10 +50,10 @@
 	string menuIcon = "menu";
 	void ToggleSidebar()
 	{
-		AppStore.Sidebar.Toggle();
 		if (AppStore.Sidebar.Visible)
 			menuIcon = "menu";
 		else
 			menuIcon = "menu_open";
+		AppStore.Sidebar.Toggle();
 	}
 }

@@ -1,7 +1,19 @@
-﻿<MatSelectValue Items="@CommunitiesToSelect" TValue="string" TItem="CommunityUpdateViewModel"
+﻿@*<MatSelectValue Items="@CommunitiesToSelect" TValue="string" TItem="CommunityUpdateViewModel"
 					ValueChanged="CommunitySelectedChanged" ValueExpression="@(() => CommunitySelected)" ValueSelector="@(i=>i.ShortName)"
 					HelperTextPersistent="false" Label="Seleziona la community">
 	<ItemTemplate>
 		<span>@context.Name</span>
 	</ItemTemplate>
-</MatSelectValue>
+</MatSelectValue>*@
+
+<Select TValue="string" Multiple="true" SelectedValue="CommunitySelected" SelectedValueChanged="CommunitySelectedChanged">
+	@foreach (var item in CommunitiesToSelect)
+	{
+		<SelectItem Value="@item.ShortName">
+			<div style="display:inline">
+				<img src="@LinkViewModel.GetImageIcon(item.Logo).ToString()" />
+				@item.Name
+			</div>
+		</SelectItem>
+	}
+</Select>
