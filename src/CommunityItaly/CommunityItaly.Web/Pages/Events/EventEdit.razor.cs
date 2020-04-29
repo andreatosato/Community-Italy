@@ -19,6 +19,8 @@ namespace CommunityItaly.Web.Pages.Events
 		public string Id { get; set; }
 		TimeSpan StartHour { get; set; }
 		TimeSpan EndHour { get; set; }
+		TimeSpan StartCFPHour { get; set; }
+		TimeSpan EndCFPHour { get; set; }
 
 		public EventViewModelReadOnly EventViewModel { get; set; }
 		
@@ -30,6 +32,11 @@ namespace CommunityItaly.Web.Pages.Events
 			EndHour = EventViewModel.EndDate.TimeOfDay;
 			if (EventViewModel.CFP == null)
 				EventViewModel.CFP = new CallForSpeakerViewModel();
+			else
+			{
+				StartCFPHour = EventViewModel.CFP.StartDate.TimeOfDay;
+				EndCFPHour = EventViewModel.CFP.EndDate.TimeOfDay;
+			}
 			AppStore.EventImage = null;
 		}
 
@@ -38,8 +45,8 @@ namespace CommunityItaly.Web.Pages.Events
 			var e = new EventViewModel
 			{
 				Id = EventViewModel.Id,
-				StartDate = EventViewModel.StartDate.AddSeconds(StartHour.TotalSeconds),
-				EndDate = EventViewModel.EndDate.AddSeconds(EndHour.TotalSeconds),
+				StartDate = EventViewModel.StartDate,
+				EndDate = EventViewModel.EndDate,
 				CFP = string.IsNullOrEmpty(EventViewModel.CFP.Url) ? null : EventViewModel.CFP,
 				CommunityName = EventViewModel.Community.ShortName,
 				Name = EventViewModel.Name
@@ -72,23 +79,39 @@ namespace CommunityItaly.Web.Pages.Events
 			AppStore.EventImage = await FileUploadEntry.FromBlazorise(image).ConfigureAwait(false);
 		}
 
-		void OnWritten(FileWrittenEventArgs e)
-		{
-			System.Console.WriteLine($"File: {e.File.Name} Position: {e.Position}");
-		}
-
 		void OnProgressed(FileProgressedEventArgs e)
 		{
 			System.Console.WriteLine($"File: {e.File.Name} Progress: {e.Percentage}");
 		}
 
-		//void StartDateTimeChanged(TimeSpan time)
-		//{
-		//	EventViewModel.StartDate = EventViewModel.StartDate.AddSeconds(time.TotalSeconds - EventViewModel.StartDate.ToLocalTime().Second);
-		//}
-		//void EndDateTimeChanged(TimeSpan time)
-		//{
-		//	EventViewModel.EndDate = EventViewModel.EndDate.AddSeconds(time.TotalSeconds - EventViewModel.EndDate.ToLocalTime().Second);
-		//}
+		void StartDateTimeChanged(TimeSpan time)
+		{
+			StartHour = time;
+			double seconds = StartHour.TotalSeconds - EventViewModel.StartDate.TimeOfDay.TotalSeconds;
+			EventViewModel.StartDate = EventViewModel.StartDate.AddSeconds(seconds);
+			StateHasChanged();
+		}
+		void EndDateTimeChanged(TimeSpan time)
+		{
+			EndHour = time;
+			double seconds = EndHour.TotalSeconds - EventViewModel.EndDate.TimeOfDay.TotalSeconds;
+			EventViewModel.EndDate = EventViewModel.EndDate.AddSeconds(seconds);
+			StateHasChanged();
+		}
+
+		void StartDateCFPTimeChanged(TimeSpan time)
+		{
+			StartCFPHour = time;
+			double seconds = StartCFPHour.TotalSeconds - EventViewModel.CFP.StartDate.TimeOfDay.TotalSeconds;
+			EventViewModel.CFP.StartDate = EventViewModel.CFP.StartDate.AddSeconds(seconds);
+			StateHasChanged();
+		}
+		void EndDateTimeCFPChanged(TimeSpan time)
+		{
+			EndCFPHour = time;
+			double seconds = EndHour.TotalSeconds - EventViewModel.CFP.EndDate.TimeOfDay.TotalSeconds;
+			EventViewModel.CFP.EndDate = EventViewModel.CFP.EndDate.AddSeconds(seconds);
+			StateHasChanged();
+		}
 	}
 }

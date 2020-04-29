@@ -4,15 +4,15 @@
 	{
 		public static string Home() => "/";
 
-		public static string EventList() => "/event";
-		public static string EventEdit(string id) => $"/Event/Edit/{id}";
-		public static string EventCreate() => $"/Event/Create";
+		public static string EventList() => $"/{BreadCrum.EventList}";
+		public static string EventEdit(string id) => $"/{BreadCrum.EventEdit}/{id}";
+		public static string EventCreate() => $"/{BreadCrum.EventCreate}";
 
-		public static string CommunityList() => "/community";
-		public static string CommunityEdit(string shortname) => $"/Community/Edit/{shortname}";
-		public static string CommunityCreate() => $"/Community/Create";
+		public static string CommunityList() => $"/{BreadCrum.CommunityList}";
+		public static string CommunityEdit(string shortname) => $"/{BreadCrum.CommunityCreate}/{shortname}";
+		public static string CommunityCreate() => $"/{BreadCrum.CommunityCreate}";
 
-		public static string EventReports() => "/EventReports";
+		public static string EventReports() => $"/{BreadCrum.EventReport}";
 	}
 
 	public class BreadCrum

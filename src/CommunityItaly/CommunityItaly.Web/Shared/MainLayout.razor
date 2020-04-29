@@ -12,8 +12,8 @@
 			<Bar Style="height: 64px;" Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Light">
 				<BarBrand>
 					<BarItem>
-						<BarLink To="">
-							<Icon Name="IconName.Dashboard" @onclick="ToggleSidebar" />
+						<BarLink Clicked="ToggleSidebar">
+							<Icon Name="menuIcon" />
 							Community Italy
 						</BarLink>
 					</BarItem>
@@ -22,7 +22,7 @@
 					<BarEnd>						
 						<BarItem>
 							<BarLink To="https://github.com/andreatosato/Community-Italy" target="_blank">
-								<i class="fab fa-github" style="height:24px;width:24px;vertical-align:top;" aria-hidden="true"></i>
+								<i class="fab fa-github" style="height:24px;width:24px;vertical-align:top;color:white;" aria-hidden="true"></i>
 							</BarLink>
 						</BarItem>
 					</BarEnd>
@@ -47,8 +47,13 @@
 </Layout>
 
 @code{
+	string menuIcon = "menu";
 	void ToggleSidebar()
 	{
 		AppStore.Sidebar.Toggle();
+		if (AppStore.Sidebar.Visible)
+			menuIcon = "menu";
+		else
+			menuIcon = "menu_open";
 	}
 }
