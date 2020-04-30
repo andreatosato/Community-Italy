@@ -82,7 +82,7 @@
 		<CardBody>
 			<Row>
 				<Column ColumnSize="ColumnSize.Is12">
-					<CommunitySelect CommunitySelected="EventViewModel.Community.ShortName" CommunitySelectedChanged="SelectCommunity"></CommunitySelect>
+					<CommunitySelect @bind-CommunitySelected="EventViewModel.Community.ShortName"></CommunitySelect>
 					@*<TextEdit Placeholder="Nome evento" @bind-Text="EventViewModel.Community.Name" />*@
 					<ValidationMessage For="@(() => EventViewModel.Community.ShortName)" />
 				</Column>

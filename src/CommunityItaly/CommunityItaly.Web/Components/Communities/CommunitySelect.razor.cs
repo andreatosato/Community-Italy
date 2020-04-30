@@ -2,6 +2,7 @@
 using CommunityItaly.Web.Services;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CommunityItaly.Web.Components.Communities
@@ -17,13 +18,28 @@ namespace CommunityItaly.Web.Components.Communities
 		[Parameter]
 		public EventCallback<string> CommunitySelectedChanged { get; set; }
 
-		public List<CommunityUpdateViewModel> CommunitiesToSelect { get; set; } = new List<CommunityUpdateViewModel>();
+		public List<CommunityUpdateViewModel> CommunitiesList { get; set; } = new List<CommunityUpdateViewModel>();
 
+		public CommunityUpdateViewModel CommunityReadOnly { get; set; }
 
 		protected override async Task OnInitializedAsync()
 		{
-			CommunitiesToSelect = (List<CommunityUpdateViewModel>)await Http.GetCommunitySelect().ConfigureAwait(false);
-			await CommunitySelectedChanged.InvokeAsync(CommunitySelected);
+			CommunitiesList = (List<CommunityUpdateViewModel>)await Http.GetCommunitySelect().ConfigureAwait(false);
+			if (!string.IsNullOrEmpty(CommunitySelected))
+			{
+				await CommunitySelectedChanged.InvokeAsync(CommunitySelected);
+				CommunityReadOnly = CommunitiesList.FirstOrDefault(x => x.ShortName == CommunitySelected);
+			}
+		}
+
+		async Task CommunityChanged(string value)
+		{
+			await CommunitySelectedChanged.InvokeAsync(value);
+			if (!string.IsNullOrEmpty(value))
+			{	
+				CommunityReadOnly = CommunitiesList.FirstOrDefault(x => x.ShortName == value);
+			}
+			StateHasChanged();
 		}
 	}
 }

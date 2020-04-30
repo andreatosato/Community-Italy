@@ -67,7 +67,7 @@ namespace CommunityItaly.Server.Functions
         public enum ImageSize { ExtraSmall, Small, Medium }
 
         private static readonly Dictionary<ImageSize, (int, int)> imageDimensionsTable = new Dictionary<ImageSize, (int, int)>() {
-            { ImageSize.Small,  (32, 32) },
+            { ImageSize.Small,  (64, 64) },
             { ImageSize.Medium, (400, 400) }
         };
     }

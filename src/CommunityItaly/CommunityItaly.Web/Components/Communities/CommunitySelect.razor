@@ -1,19 +1,35 @@
-﻿@*<MatSelectValue Items="@CommunitiesToSelect" TValue="string" TItem="CommunityUpdateViewModel"
-					ValueChanged="CommunitySelectedChanged" ValueExpression="@(() => CommunitySelected)" ValueSelector="@(i=>i.ShortName)"
-					HelperTextPersistent="false" Label="Seleziona la community">
-	<ItemTemplate>
-		<span>@context.Name</span>
-	</ItemTemplate>
-</MatSelectValue>*@
-
-<Select TValue="string" Multiple="true" SelectedValue="CommunitySelected" SelectedValueChanged="CommunitySelectedChanged">
-	@foreach (var item in CommunitiesToSelect)
+﻿<Row>
+	<Column ColumnSize="ColumnSize.Is6">
+		<Select TValue="string" SelectedValue="CommunitySelected" SelectedValueChanged="CommunityChanged">
+			@foreach (var item in CommunitiesList)
+			{
+				<SelectItem Value="@item.ShortName">
+					@item.Name
+				</SelectItem>
+			}
+		</Select>
+	</Column>
+	@if (CommunityReadOnly != null)
 	{
-		<SelectItem Value="@item.ShortName">
-			<div style="display:inline">
-				<img src="@LinkViewModel.GetImageIcon(item.Logo).ToString()" />
-				@item.Name
-			</div>
-		</SelectItem>
+		<Column ColumnSize="ColumnSize.Is6">
+			<Row>
+				<Column ColumnSize="ColumnSize.Is2">Name</Column>
+				<Column ColumnSize="ColumnSize.Is4">@CommunityReadOnly.Name</Column>
+				<Column ColumnSize="ColumnSize.Is6"><img src="@LinkViewModel.GetImageIcon(CommunityReadOnly.Logo).ToString()" /></Column>
+			</Row>
+			<Row>
+				<Column ColumnSize="ColumnSize.Is2">Managers:</Column>
+				<Column ColumnSize="ColumnSize.Is4"><Badge Color="Color.Info">@CommunityReadOnly.Managers.Count</Badge></Column>
+			</Row>
+			<Row>
+				<Column ColumnSize="ColumnSize.Is2">Website:</Column>
+				<Column ColumnSize="ColumnSize.Is4">
+					<a href="@CommunityReadOnly.WebSite" target="_blank">
+						<Icon Name="@("link")"></Icon>
+					</a>
+				</Column>
+			</Row>
+		</Column>
 	}
-</Select>
+</Row>
+
