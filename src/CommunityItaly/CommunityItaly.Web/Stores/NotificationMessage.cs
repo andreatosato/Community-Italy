@@ -34,42 +34,4 @@ namespace CommunityItaly.Web.Stores
 			Warning = 8
 		}
 	}
-
-	public class NotificationUI
-	{
-		public Snackbar Snackbar { get; set; }
-		public string Body { get; private set; }
-		public NotificationUI()
-		{
-			Snackbar = new Snackbar();
-		}
-		public void AddMessage(NotificationMessage message)
-		{
-			Body = message.Message;
-			switch (message.NotificationType)
-			{
-				case NotificationMessage.MessageType.Danger:
-					Snackbar.Color = SnackbarColor.Danger;
-					break;
-				case NotificationMessage.MessageType.Dark:
-					break;
-				case NotificationMessage.MessageType.Info:
-					break;
-				case NotificationMessage.MessageType.Light:
-					break;
-				case NotificationMessage.MessageType.Link:
-					break;
-				case NotificationMessage.MessageType.Primary:
-					break;
-				case NotificationMessage.MessageType.Secondary:
-					break;
-				case NotificationMessage.MessageType.Success:
-					break;
-				case NotificationMessage.MessageType.Warning:
-					break;
-				default:
-					break;
-			}
-		}
-	}
 }

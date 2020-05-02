@@ -33,12 +33,11 @@
 			<BreadcrumCommunity></BreadcrumCommunity>			
 			<Container Padding="Padding.Is4.OnX">
 				@Body
-				<Snackbar @ref="AppStore.Notification.Snackbar">
+				<Snackbar @ref="snackbar" Color="snackbarColor">
 					<SnackbarBody>
-						<span>@AppStore.Notification.Body</span>
-						Single line of text directly related to the operation performed
+						<span>@messageText</span>
 					</SnackbarBody>
-					<SnackbarAction Clicked="@(()=>AppStore.Notification.Snackbar.Hide())"><Icon Name="IconName.Clear"></Icon></SnackbarAction>
+					<SnackbarAction Clicked="@(()=> snackbar.Hide())"><Icon Name="IconName.Clear"></Icon></SnackbarAction>
 				</Snackbar>
 			</Container>
 			
@@ -47,6 +46,43 @@
 </Layout>
 
 @code{
+	Snackbar snackbar;
+	string messageText;
+	SnackbarColor snackbarColor;
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+	{
+		if(firstRender)
+			AppStore.AddMessage = AddMessage;
+
+		return base.OnAfterRenderAsync(firstRender);
+	}
+
+	private void AddMessage(NotificationMessage message)
+	{
+		messageText = message.Message;
+		switch (message.NotificationType)
+		{
+			case NotificationMessage.MessageType.Info:
+				snackbarColor = SnackbarColor.Info;
+				break;
+			case NotificationMessage.MessageType.Success:
+				snackbarColor = SnackbarColor.Success;
+				break;
+			case NotificationMessage.MessageType.Danger:
+				snackbarColor = SnackbarColor.Danger;
+				break;
+			case NotificationMessage.MessageType.Warning:
+				snackbarColor = SnackbarColor.Warning;
+				break;
+			default:
+				snackbarColor = SnackbarColor.Info;
+				break;
+		}
+
+		this.StateHasChanged();
+	}
+
 	string menuIcon = "menu";
 	void ToggleSidebar()
 	{

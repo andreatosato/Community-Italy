@@ -83,7 +83,6 @@
 			<Row>
 				<Column ColumnSize="ColumnSize.Is12">
 					<CommunitySelect @bind-CommunitySelected="EventViewModel.Community.ShortName"></CommunitySelect>
-					@*<TextEdit Placeholder="Nome evento" @bind-Text="EventViewModel.Community.Name" />*@
 					<ValidationMessage For="@(() => EventViewModel.Community.ShortName)" />
 				</Column>
 			</Row>

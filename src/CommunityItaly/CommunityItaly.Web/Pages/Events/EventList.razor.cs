@@ -47,6 +47,8 @@ namespace CommunityItaly.Web.Pages.Events
 			EventViewModels = pagedViewModel.Entities;
 			Total = pagedViewModel.Total;
 
+			AppStore.AddNotification(new NotificationMessage("Prova", NotificationMessage.MessageType.Success));
+			AppStore.AddNotification(new NotificationMessage("Start", NotificationMessage.MessageType.Success));
 			StateHasChanged();
 		}
 

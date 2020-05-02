@@ -1,18 +1,18 @@
 ﻿using Blazorise;
 using Blazorise.Sidebar;
-using Blazorise.Snackbar;
 using CommunityItaly.Shared.ViewModels;
+using System;
 
 namespace CommunityItaly.Web.Stores
 {
 	public static class AppStore
 	{
-		public static NotificationUI Notification { get; set; } = new NotificationUI();
 		public static Sidebar Sidebar { get; set; } = new Sidebar();
 		public static void AddNotification(NotificationMessage message)
 		{
-			Notification.AddMessage(message);
+			AddMessage.Invoke(message);
 		}
+		public static Action<NotificationMessage> AddMessage;
 
 		public static EventViewModelReadOnly EventEdit { get; set; }
 		public static CommunityUpdateViewModel CommunityEdit { get; set; }
