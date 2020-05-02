@@ -33,7 +33,7 @@
 			<BreadcrumCommunity></BreadcrumCommunity>			
 			<Container Padding="Padding.Is4.OnX">
 				@Body
-				<Snackbar @ref="snackbar" Color="snackbarColor">
+				<Snackbar @ref="snackbar" Color="snackbarColor" Multiline="true">
 					<SnackbarBody>
 						<span>@messageText</span>
 					</SnackbarBody>
@@ -52,8 +52,7 @@
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
-		if(firstRender)
-			AppStore.AddMessage = AddMessage;
+		AppStore.AddMessage = AddMessage;
 
 		return base.OnAfterRenderAsync(firstRender);
 	}
@@ -80,7 +79,7 @@
 				break;
 		}
 
-		this.StateHasChanged();
+		snackbar.Show();
 	}
 
 	string menuIcon = "menu";
