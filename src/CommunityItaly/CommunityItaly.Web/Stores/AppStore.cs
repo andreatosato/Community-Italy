@@ -8,11 +8,6 @@ namespace CommunityItaly.Web.Stores
 	public static class AppStore
 	{
 		public static Sidebar Sidebar { get; set; } = new Sidebar();
-		public static void AddNotification(NotificationMessage message)
-		{
-			AddMessage.Invoke(message);
-		}
-		public static Action<NotificationMessage> AddMessage;
 
 		public static EventViewModelReadOnly EventEdit { get; set; }
 		public static CommunityUpdateViewModel CommunityEdit { get; set; }

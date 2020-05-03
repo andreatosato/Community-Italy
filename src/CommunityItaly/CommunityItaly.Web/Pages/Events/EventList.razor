@@ -3,7 +3,7 @@
 <Row>
 	<Column ColumnSize="ColumnSize.Is12">
 		<div style="text-align:right;">
-			<Button OnClick="Create"><Icon Name="@("create")"></Icon> Crea evento</Button>
+			<Button Clicked="Create"><Icon Name="IconAppName.Create"></Icon> Crea evento</Button>
 		</div>			
 	</Column>
 </Row>
@@ -17,7 +17,7 @@
 				<DataGridDateColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.EndDate)" Caption="A" Sortable="false"></DataGridDateColumn>
 				<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.BuyTicket)" Caption="Biglietti" Editable="true">
 					<DisplayTemplate>
-						<Link To="@(( context as EventViewModelReadOnly)?.BuyTicket)" Target="Target.Blank"><Icon Name="@("link")"></Icon></Link>
+						<Link To="@(( context as EventViewModelReadOnly)?.BuyTicket)" Target="Target.Blank"><Icon Name="IconAppName.Link"></Icon></Link>
 					</DisplayTemplate>
 				</DataGridColumn>
 				<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.Community)" Caption="Community" Sortable="false">
@@ -27,8 +27,8 @@
 				</DataGridColumn>
 				<DataGridColumn TItem="EventViewModelReadOnly" Field="@nameof(EventViewModelReadOnly.Id)" Caption="#" Sortable="false">
 					<DisplayTemplate>
-						<Link Clicked="@(() => Edit(context))"><Icon Name="@("edit")"></Icon></Link>
-						<Link Clicked="@(() => Delete(context.Id))"><Icon Name="@("delete")"></Icon></Link>
+						<Link Clicked="@(() => Edit(context))"><Icon Name="IconAppName.Edit"></Icon></Link>
+						<Link Clicked="@(() => Delete(context.Id))"><Icon Name="IconAppName.Delete"></Icon></Link>
 					</DisplayTemplate>
 				</DataGridColumn>
 			</DataGridColumns>

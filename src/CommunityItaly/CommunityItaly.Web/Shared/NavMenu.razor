@@ -17,25 +17,25 @@
 		<SidebarNavigation>
 			<SidebarItem>
 				<SidebarLink To="@Routes.Home()" Title="Home">
-					<Icon Name="@("event")" Margin="Margin.Is3.FromRight" />Home
+					<Icon Name="IconAppName.Event" Margin="Margin.Is3.FromRight" />Home
 				</SidebarLink>
 			</SidebarItem>
 			<SidebarItem>
 				<SidebarLink Toggled="(isOpen)=> eventsSubItems.Toggle(isOpen)" IsShow="true">
-					<Icon Name="@("event_note")" Margin="Margin.Is3.FromRight" />Eventi
+					<Icon Name="IconAppName.EventNote" Margin="Margin.Is3.FromRight" />Eventi
 				</SidebarLink>
 				<SidebarSubItem @ref="eventsSubItems" IsShow="true" >
 					<SidebarLink To="@Routes.EventList()" Title="Eventi">
-						<Icon Name="@("event")" Margin="Margin.Is3.FromRight" /> Eventi
+						<Icon Name="IconAppName.Event" Margin="Margin.Is3.FromRight" /> Eventi
 					</SidebarLink>
 					<SidebarLink To="@Routes.EventReports()" Title="Ricerca">
-						<Icon Name="@("report")" Margin="Margin.Is3.FromRight" /> Ricerca
+						<Icon Name="IconAppName.Report" Margin="Margin.Is3.FromRight" /> Ricerca
 					</SidebarLink>
 				</SidebarSubItem>
 			</SidebarItem>
 			<SidebarItem>
 				<SidebarLink To="@Routes.CommunityList()" Title="Community">
-					<Icon Name="@("group")" Margin="Margin.Is3.FromRight" /> Community
+					<Icon Name="IconAppName.Group" Margin="Margin.Is3.FromRight" /> Community
 				</SidebarLink>
 			</SidebarItem>
 		</SidebarNavigation>

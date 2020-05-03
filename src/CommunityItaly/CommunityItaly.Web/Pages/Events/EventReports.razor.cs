@@ -1,7 +1,6 @@
 ﻿using CommunityItaly.Shared;
 using CommunityItaly.Shared.ViewModels;
 using CommunityItaly.Web.Services;
-using CommunityItaly.Web.Stores;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -11,8 +10,8 @@ namespace CommunityItaly.Web.Pages.Reports
 {
 	public partial class EventReports : ComponentBase
 	{
-		[Inject]
-		IHttpServices Http { get; set; }
+		[Inject] IHttpServices Http { get; set; }
+		[Inject] ISnackbarService SnackbarService { get; set; }
 
 		public SearchReport Search { get; set; }
 
@@ -35,7 +34,7 @@ namespace CommunityItaly.Web.Pages.Reports
 		{
 			if (Search.StartDate != null && Search.EndDate != null && Search.StartDate > Search.EndDate)
 			{
-				AppStore.AddNotification(new NotificationMessage("Le date non sono corrette", NotificationMessage.MessageType.Warning));
+				SnackbarService.Show("Le date non sono corrette", SnackbarType.Info);
 			}
 			else
 			{
@@ -48,11 +47,11 @@ namespace CommunityItaly.Web.Pages.Reports
 			var response = await Http.GenerateReportEvents(Search.StartDate, Search.EndDate);
 			if(response.IsSuccessStatusCode)
 			{
-				AppStore.AddNotification(new NotificationMessage("Il report verrà inviato via mail agli amministratori", NotificationMessage.MessageType.Info));
+				SnackbarService.Show("Il report verrà inviato via mail agli amministratori", SnackbarType.Info);
 			}
 			else
 			{
-				AppStore.AddNotification(new NotificationMessage("Errore generazione del report", new Exception(response.ReasonPhrase)));
+				SnackbarService.Show("Errore generazione del report", SnackbarType.Error);
 			}
 		}
 

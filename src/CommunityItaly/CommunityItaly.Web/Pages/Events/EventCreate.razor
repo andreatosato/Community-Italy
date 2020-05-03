@@ -1,72 +1,143 @@
-﻿@page "/Event/Create"
+﻿@page "/event/create"
+@inherits Components.ValidationComponent
 
-<h3>EventCreate</h3>
 
 <EditForm Model="EventViewModel" OnValidSubmit="Success">
-	<FluentValidator></FluentValidator>
-	<ValidationSummary />
-	<div class="mat-layout-grid">
-		<div class="mat-layout-grid-inner">
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-				<MatTextField Label="Nome evento" @bind-Value="EventViewModel.Name" FullWidth="true" />
-				<ValidationMessage For="@(() => EventViewModel.Name)" />
-			</div>
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-				<MatTextField Label="Acquista biglietto" Icon="@MatIconNames.Event_seat" IconTrailing="true" @bind-Value="EventViewModel.BuyTicket" FullWidth="true" />
-				<ValidationMessage For="@(() => EventViewModel.BuyTicket)" />
-			</div>
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-				<MatDatePicker Label="Start Date" @bind-Value="EventViewModel.StartDate" FullWidth="true" EnableTime="true" Enable24hours="true" />
-				<ValidationMessage For="@(() => EventViewModel.StartDate)" />
-			</div>
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-				<MatDatePicker Label="End Date" @bind-Value="EventViewModel.EndDate" FullWidth="true" EnableTime="true" Enable24hours="true" />
-				<ValidationMessage For="@(() => EventViewModel.EndDate)" />
-			</div>
-
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-				<MatFileUpload OnChange="@FilesReady" Label="Carica l'immagine dell'evento"></MatFileUpload>
-			</div>
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-				@*@if (EventViewModel.Logo != null)
-				{
-					<img src="@LinkViewModel.GetImageMedium(EventViewModel.Logo).ToString()" style="text-align:center" />
-				}*@
-			</div>
-
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-				<div class="mat-layout-grid-inner mat-elevation-z2 mat-padding">
-					<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-						<MatSubtitle2>Call for speaker</MatSubtitle2>
-					</div>
-					<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-						<MatTextField Label="Call for speaker url" @bind-Value="EventViewModel.CFP.Url" Icon="@MatIconNames.Share" IconTrailing="true" FullWidth="true" />
-					</div>
-					<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-						<MatDatePicker Label="Start Date" @bind-Value="EventViewModel.CFP.StartDate" FullWidth="true" />
-						<ValidationMessage For="@(() => EventViewModel.CFP.StartDate)" />
-					</div>
-					<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-						<MatDatePicker Label="End Date" @bind-Value="EventViewModel.CFP.EndDate" FullWidth="true" />
-						<ValidationMessage For="@(() => EventViewModel.CFP.EndDate)" />
-					</div>
-				</div>
-			</div>
-
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-				<div class="mat-layout-grid-inner mat-elevation-z2 mat-padding">
-					<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-						<MatSubtitle2>Community</MatSubtitle2>
-					</div>
-					<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-						<CommunitySelect @bind-CommunitySelected=EventViewModel.CommunityName></CommunitySelect>
-					</div>
-				</div>
-			</div>
-
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="text-align: center">
-				<MatButton Icon="@MatIconNames.Save" Raised="true" Type="submit">Save</MatButton>
-			</div>
-		</div>
-	</div>
+	<Validations @ref="Validations" Mode="ValidationMode">
+		<Card>
+			<CardHeader><CardTitle Size="5">Evento</CardTitle></CardHeader>
+			<CardBody>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is6">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.Name))">
+							<TextEdit Placeholder="Nome evento" @bind-Text="EventViewModel.Name">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</TextEdit>
+						</Validation>
+					</Column>
+					<Column ColumnSize="ColumnSize.Is6">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.BuyTicket))">
+							<Addons>
+								<Addon AddonType="AddonType.Body">
+									<TextEdit Placeholder="Acquista biglietto" @bind-Text="EventViewModel.BuyTicket">
+										<Feedback>
+											<ValidationError />
+										</Feedback>
+									</TextEdit>
+								</Addon>
+								<Addon AddonType="AddonType.End"><AddonLabel><Icon Name="IconAppName.EventSeat"></Icon></AddonLabel></Addon>
+							</Addons>
+						</Validation>
+					</Column>
+				</Row>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is4">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.StartDate))">
+							<DateEdit TValue="DateTime" @bind-Date="@EventViewModel.StartDate">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</DateEdit>
+						</Validation>
+					</Column>
+					<Column ColumnSize="ColumnSize.Is2">
+						<TimeEdit TValue="TimeSpan" Time="StartHour" TimeChanged="StartDateTimeChanged" />
+					</Column>
+					<Column ColumnSize="ColumnSize.Is4">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.EndDate))">
+							<DateEdit TValue="DateTime" @bind-Date="@EventViewModel.EndDate">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</DateEdit>
+						</Validation>
+					</Column>
+					<Column ColumnSize="ColumnSize.Is4">
+						<TimeEdit TValue="TimeSpan" Time="EndHour" TimeChanged="EndDateTimeChanged" />
+					</Column>
+				</Row>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is6">
+						<FileEdit Changed="@FilesReady" Progressed="@OnProgressed" Filter=".jpg, .png, .gif"></FileEdit>
+					</Column>
+					<Column ColumnSize="ColumnSize.Is6">
+						@if (!string.IsNullOrEmpty(ImageUploaded))
+						{
+							<Figure Size="FigureSize.Is256x256" style="text-align:center">
+								<FigureImage Source="@ImageUploaded" AlternateText="@(EventViewModel.CommunityName)" Style="border-color:black; border:2px; max-width:256px;max-height:256px;" />
+								<FigureCaption>@EventViewModel.CommunityName</FigureCaption>
+							</Figure>
+						}
+						else if (EventViewModel.Logo != null)
+						{
+							<Figure Size="FigureSize.Is256x256" style="text-align:center">
+								<FigureImage Source="@LinkViewModel.GetImageMedium(EventViewModel.Logo).ToString()" AlternateText="@(EventViewModel.CommunityName)" Style="border-color:black; border:2px;" />
+								<FigureCaption>@EventViewModel.CommunityName</FigureCaption>
+							</Figure>
+						}
+					</Column>
+				</Row>
+			</CardBody>
+		</Card>
+		<Card>
+			<CardHeader><CardTitle Size="5">Call for speaker</CardTitle></CardHeader>
+			<CardBody>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is12">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.CFP.Url))">
+							<TextEdit Placeholder="Nome evento" @bind-Text="EventViewModel.CFP.Url">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</TextEdit>
+						</Validation>
+					</Column>
+				</Row>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is4">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.CFP.StartDate))">
+							<DateEdit TValue="DateTime" @bind-Date="@EventViewModel.CFP.StartDate">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</DateEdit>
+						</Validation>
+					</Column>
+					<Column ColumnSize="ColumnSize.Is2">
+						<TimeEdit TValue="TimeSpan" Time="StartCFPHour" TimeChanged="StartDateCFPTimeChanged" />
+					</Column>
+					<Column ColumnSize="ColumnSize.Is4">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.CFP.EndDate))">
+							<DateEdit TValue="DateTime" @bind-Date="@EventViewModel.CFP.EndDate">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</DateEdit>
+						</Validation>
+					</Column>
+					<Column ColumnSize="ColumnSize.Is4">
+						<TimeEdit TValue="TimeSpan" Time="EndCFPHour" TimeChanged="EndDateTimeCFPChanged" />
+					</Column>
+				</Row>
+			</CardBody>
+		</Card>
+		<Card>
+			<CardHeader><CardTitle Size="5">Community</CardTitle></CardHeader>
+			<CardBody>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is12">
+						<CommunitySelect @bind-CommunitySelected="EventViewModel.CommunityName"></CommunitySelect>
+					</Column>
+				</Row>
+			</CardBody>
+		</Card>
+		<Row>
+			<Column ColumnSize="ColumnSize.Is12" style="text-align: center">
+				<Button Type="ButtonType.Submit" Color="Color.Primary"><Icon Name="IconAppName.Save" /> Save</Button>
+			</Column>
+		</Row>
+	</Validations>
 </EditForm>
+

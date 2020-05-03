@@ -1,19 +1,24 @@
 ﻿using Blazorise;
 using CommunityItaly.Shared.ViewModels;
+using CommunityItaly.Web.Components;
 using CommunityItaly.Web.Services;
 using CommunityItaly.Web.Stores;
+using CommunityItaly.Web.Validator;
+using FluentValidation;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc.Localization;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CommunityItaly.Web.Pages.Events
 {
-	public partial class EventEdit : ComponentBase
+	public partial class EventEdit : ValidationComponent
 	{
-
-		[Inject]
-		private IHttpServices Http { get; set; }
+		[Inject] IHttpServices Http { get; set; }
+		[Inject] IValidator<EventViewModelReadOnly> Validator { get; set; }
+		[Inject] ISnackbarService SnackbarService { get; set; }
 
 		[Parameter]
 		public string Id { get; set; }
@@ -21,6 +26,7 @@ namespace CommunityItaly.Web.Pages.Events
 		TimeSpan EndHour { get; set; }
 		TimeSpan StartCFPHour { get; set; }
 		TimeSpan EndCFPHour { get; set; }
+		string ImageUploaded { get; set; } = "";
 
 		public EventViewModelReadOnly EventViewModel { get; set; }
 		
@@ -42,46 +48,48 @@ namespace CommunityItaly.Web.Pages.Events
 
 		async Task Success()
 		{
-			var e = new EventViewModel
+			if (ValidateAll())
 			{
-				Id = EventViewModel.Id,
-				StartDate = EventViewModel.StartDate,
-				EndDate = EventViewModel.EndDate,
-				CFP = string.IsNullOrEmpty(EventViewModel.CFP.Url) ? null : EventViewModel.CFP,
-				CommunityName = EventViewModel.Community.ShortName,
-				Name = EventViewModel.Name
-			};
-			if (!string.IsNullOrEmpty(EventViewModel.BuyTicket))
-			{
-				e.BuyTicket = EventViewModel.BuyTicket;
-			}
-			var responseUpdate = await Http.UpdateEvent(e).ConfigureAwait(false);
-			if (responseUpdate.IsSuccessStatusCode)
-			{
-				if (AppStore.EventImage != null)
+				var e = new EventViewModel
 				{
-					var responseUploadMessage = await Http.UploadEventImage(e.Id, AppStore.EventImage).ConfigureAwait(false);
-					if (!responseUploadMessage.IsSuccessStatusCode)
-						AppStore.AddNotification(new NotificationMessage("Errore salvataggio", NotificationMessage.MessageType.Danger));
+					Id = EventViewModel.Id,
+					StartDate = EventViewModel.StartDate,
+					EndDate = EventViewModel.EndDate,
+					CFP = string.IsNullOrEmpty(EventViewModel.CFP.Url) ? null : EventViewModel.CFP,
+					CommunityName = EventViewModel.Community.ShortName,
+					Name = EventViewModel.Name
+				};
+				if (!string.IsNullOrEmpty(EventViewModel.BuyTicket))
+				{
+					e.BuyTicket = EventViewModel.BuyTicket;
+				}
+				var responseUpdate = await Http.UpdateEvent(e).ConfigureAwait(false);
+				if (responseUpdate.IsSuccessStatusCode)
+				{
+					if (AppStore.EventImage != null)
+					{
+						var responseUploadMessage = await Http.UploadEventImage(e.Id, AppStore.EventImage).ConfigureAwait(false);
+						if (!responseUploadMessage.IsSuccessStatusCode)
+							SnackbarService.Show("Errore salvataggio", SnackbarType.Error);
+						else
+							SnackbarService.Show("Evento salvato", SnackbarType.Success);
+					}
 					else
-						AppStore.AddNotification(new NotificationMessage("Evento salvato", NotificationMessage.MessageType.Success));
-				}
-				else
-				{
-					AppStore.AddNotification(new NotificationMessage("Evento salvato", NotificationMessage.MessageType.Success));
+					{
+						SnackbarService.Show("Evento salvato", SnackbarType.Success);
+					}
 				}
 			}
-		}
-
-		void SelectCommunity(string value)
-		{
-			EventViewModel.Community.ShortName = value;
 		}
 
 		async Task FilesReady(FileChangedEventArgs e)
 		{
 			var image = e.Files.FirstOrDefault();
 			AppStore.EventImage = await FileUploadEntry.FromBlazorise(image).ConfigureAwait(false);
+			var uploadImages = new MemoryStream();
+			await AppStore.EventImage.StreamData.CopyToAsync(uploadImages).ConfigureAwait(false);
+			string typeImage = e.Files.FirstOrDefault().Type;
+			ImageUploaded = $"data:{typeImage};base64,{Convert.ToBase64String(uploadImages.ToArray())}";
 		}
 
 		void OnProgressed(FileProgressedEventArgs e)
@@ -117,6 +125,13 @@ namespace CommunityItaly.Web.Pages.Events
 			double seconds = EndHour.TotalSeconds - EventViewModel.CFP.EndDate.TimeOfDay.TotalSeconds;
 			EventViewModel.CFP.EndDate = EventViewModel.CFP.EndDate.AddSeconds(seconds);
 			StateHasChanged();
+		}
+
+		private async Task ValidateFieldAsync(ValidatorEventArgs args, string fieldName)
+		{
+			var validationResult = await Validator.ValidateAsync(EventViewModel, default, fieldName);
+			if (!validationResult.IsValid)
+				SetValidationState(args, validationResult);
 		}
 	}
 }

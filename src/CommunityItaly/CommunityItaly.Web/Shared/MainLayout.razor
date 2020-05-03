@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
+@inject ISnackbarService SnackbarService
 
 <Layout Sider="true">
 	<LayoutSider>
@@ -18,8 +19,8 @@
 						</BarLink>
 					</BarItem>
 				</BarBrand>
-				<BarMenu>					
-					<BarEnd>						
+				<BarMenu>
+					<BarEnd>
 						<BarItem>
 							<BarLink To="https://github.com/andreatosato/Community-Italy" target="_blank">
 								<i class="fab fa-github" style="height:24px;width:24px;vertical-align:top;color:white;" aria-hidden="true"></i>
@@ -30,57 +31,42 @@
 			</Bar>
 		</LayoutHeader>
 		<LayoutContent>
-			<BreadcrumCommunity></BreadcrumCommunity>			
+			<BreadcrumCommunity></BreadcrumCommunity>
 			<Container Padding="Padding.Is4.OnX">
 				@Body
-				<Snackbar @ref="snackbar" Color="snackbarColor" Multiline="true">
+				<Snackbar @ref="snackbarRef">
 					<SnackbarBody>
-						<span>@messageText</span>
+						@SnackbarMessage
 					</SnackbarBody>
-					<SnackbarAction Clicked="@(()=> snackbar.Hide())"><Icon Name="IconName.Clear"></Icon></SnackbarAction>
+					<SnackbarAction Clicked="@(()=> snackbarRef.Hide())"><Icon Name="IconName.Clear"></Icon></SnackbarAction>
 				</Snackbar>
 			</Container>
-			
+
 		</LayoutContent>
 	</Layout>
 </Layout>
 
-@code{
-	Snackbar snackbar;
-	string messageText;
-	SnackbarColor snackbarColor;
-
-	protected override Task OnAfterRenderAsync(bool firstRender)
+@code{ 
+	protected override void OnInitialized()
 	{
-		AppStore.AddMessage = AddMessage;
-
-		return base.OnAfterRenderAsync(firstRender);
+		SnackbarService.OnShow += OnShow;
 	}
 
-	private void AddMessage(NotificationMessage message)
+	public void Dispose()
 	{
-		messageText = message.Message;
-		switch (message.NotificationType)
-		{
-			case NotificationMessage.MessageType.Info:
-				snackbarColor = SnackbarColor.Info;
-				break;
-			case NotificationMessage.MessageType.Success:
-				snackbarColor = SnackbarColor.Success;
-				break;
-			case NotificationMessage.MessageType.Danger:
-				snackbarColor = SnackbarColor.Danger;
-				break;
-			case NotificationMessage.MessageType.Warning:
-				snackbarColor = SnackbarColor.Warning;
-				break;
-			default:
-				snackbarColor = SnackbarColor.Info;
-				break;
-		}
-
-		snackbar.Show();
+		SnackbarService.OnShow -= OnShow;
 	}
+
+	public void OnShow(string message, SnackbarType type)
+	{
+		SnackbarType = type;
+		SnackbarMessage = message;
+		snackbarRef.Show();
+	}
+
+	Snackbar snackbarRef;
+	SnackbarType SnackbarType;
+	string SnackbarMessage;
 
 	string menuIcon = "menu";
 	void ToggleSidebar()

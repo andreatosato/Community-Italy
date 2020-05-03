@@ -34,15 +34,7 @@ namespace CommunityItaly.Web
 
 			builder.Services.AddTransient<IHttpServices, HttpServices>();
 			builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-			//builder.Services.AddMatToaster(config =>
-			//{
-			//	config.Position = MatToastPosition.TopRight;
-			//	config.PreventDuplicates = true;
-			//	config.NewestOnTop = true;
-			//	config.ShowCloseButton = true;
-			//	config.MaximumOpacity = 95;
-			//	config.VisibleStateDuration = 3000;
-			//});
+
 
 			var host = builder.Build();
 			
