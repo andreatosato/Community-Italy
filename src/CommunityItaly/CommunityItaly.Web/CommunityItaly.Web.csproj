@@ -29,10 +29,6 @@
     <Content Remove="Pages\FetchData.razor" />
     <Content Remove="Pages\People.razor" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Components\People\PersonModal.razor.cs" />
-  </ItemGroup>
 		
   <ItemGroup>
     <PackageReference Include="Blazorise.Components" Version="0.9.0.1" />
@@ -53,12 +49,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\People\" />
     <Folder Include="wwwroot\default\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Components\Communities\CommunitySelect.razor" />
-    <None Include="Components\People\PersonModal.razor" />
     <None Include="Pages\Events\EventList.razor" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
-﻿using CommunityItaly.Shared;
+﻿using Blazorise;
+using CommunityItaly.Shared;
 using CommunityItaly.Shared.ViewModels;
 using CommunityItaly.Web.Components.People;
 using CommunityItaly.Web.Services;
@@ -16,8 +17,9 @@ namespace CommunityItaly.Web.Pages.Events
 		[Inject] IHttpServices Http { get; set; }
 		[Inject] ISnackbarService SnackbarService { get; set; }
 		[Inject] JavaScriptServices JSService { get; set; }
+		public string MVP_Url { get; set; }
 
-		private PersonModal personRef;
+		private Modal personRef;
 		public SearchReport Search { get; set; }
 
 		public List<EventViewModelReadOnly> ReportLists { get; set; } = new List<EventViewModelReadOnly>();
@@ -32,7 +34,6 @@ namespace CommunityItaly.Web.Pages.Events
 				EndDate = DateTime.Now
 			};
 			base.OnInitialized();
-
 		}
 
 		async Task SearchEvents()
@@ -63,13 +64,22 @@ namespace CommunityItaly.Web.Pages.Events
 		void OpenManagers(PersonUpdateViewModel person)
 		{
 			ManagerSelected = person;
-			personRef.Open();
+			if (!string.IsNullOrEmpty(ManagerSelected.MVP_Code))
+				MVP_Url = $"https://mvp.microsoft.com/it-it/PublicProfile/{ManagerSelected.MVP_Code}";
+			personRef.Show();
 		}
 
 		public async Task OpenNewTabLink(string link)
 		{
 			await JSService.OpenNewTabLinkAsync(link);
 		}
+
+		public void Close()
+		{
+			personRef.Hide();
+			ManagerSelected = new PersonUpdateViewModel();
+		}
+
 	}
 
 	public class SearchReport

@@ -19,7 +19,7 @@
 <Row>
 	@foreach (var e in ReportLists)
 	{
-		<Column ColumnSize="ColumnSize.IsHalf">
+		<Column ColumnSize="ColumnSize.Is6">
 			<Card>
 				<CardImage Source="@LinkViewModel.GetImageMedium(e.Logo).ToString()" Alt="Placeholder image">
 				</CardImage>
@@ -52,4 +52,30 @@
 </Row>
 
 
-<PersonModal @ref="personRef" PersonData="ManagerSelected"></PersonModal>
+<Modal @ref="personRef">
+	<ModalBackdrop />
+	<ModalContent IsCentered="true" Size="ModalSize.ExtraLarge">
+		<ModalHeader>
+			<ModalTitle>@ManagerSelected.Name @ManagerSelected.Surname</ModalTitle>
+			<CloseButton Clicked="@Close" />
+		</ModalHeader>
+		<ModalBody Style="text-align:center">
+			<img src="@LinkViewModel.GetImageMedium(ManagerSelected.Picture).ToString()" />
+		</ModalBody>
+		<ModalFooter>
+			<Row>
+				<Column ColumnSize="ColumnSize.Is4" Float="Float.Left">
+					@if (!string.IsNullOrEmpty(MVP_Url))
+					{
+						<a href="@MVP_Url" target="_blank">
+							<i class="fab fa-4x fa-microsoft" aria-hidden="true" style="color:darkblue"></i>
+						</a>
+					}
+				</Column>
+				<Column ColumnSize="ColumnSize.Is8" Float="Float.Right">
+					<Button Color="Color.Primary" Clicked="@Close">Ok</Button>
+				</Column>
+			</Row>
+		</ModalFooter>
+	</ModalContent>
+</Modal>
