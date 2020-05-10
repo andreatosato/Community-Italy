@@ -33,6 +33,8 @@ namespace CommunityItaly.Web
 			builder.RootComponents.Add<App>("app");
 
 			builder.Services.AddTransient<IHttpServices, HttpServices>();
+			builder.Services.AddTransient<ISnackbarService, SnackbarService>();
+			builder.Services.AddTransient<JavaScriptServices>();
 			builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 

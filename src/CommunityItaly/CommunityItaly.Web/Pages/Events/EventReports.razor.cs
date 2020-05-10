@@ -1,18 +1,23 @@
 ﻿using CommunityItaly.Shared;
 using CommunityItaly.Shared.ViewModels;
+using CommunityItaly.Web.Components.People;
 using CommunityItaly.Web.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
-namespace CommunityItaly.Web.Pages.Reports
+namespace CommunityItaly.Web.Pages.Events
 {
 	public partial class EventReports : ComponentBase
 	{
 		[Inject] IHttpServices Http { get; set; }
 		[Inject] ISnackbarService SnackbarService { get; set; }
+		[Inject] JavaScriptServices JSService { get; set; }
 
+		private PersonModal personRef;
 		public SearchReport Search { get; set; }
 
 		public List<EventViewModelReadOnly> ReportLists { get; set; } = new List<EventViewModelReadOnly>();
@@ -58,13 +63,12 @@ namespace CommunityItaly.Web.Pages.Reports
 		void OpenManagers(PersonUpdateViewModel person)
 		{
 			ManagerSelected = person;
-			ManagerIsOpen = true;
+			personRef.Open();
 		}
 
-		void ManagerOnConfirm(bool isOpen)
+		public async Task OpenNewTabLink(string link)
 		{
-			ManagerIsOpen = isOpen;
-			ManagerSelected = new PersonUpdateViewModel();
+			await JSService.OpenNewTabLinkAsync(link);
 		}
 	}
 

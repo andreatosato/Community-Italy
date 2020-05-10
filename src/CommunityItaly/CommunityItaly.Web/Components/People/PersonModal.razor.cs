@@ -1,4 +1,5 @@
-﻿using CommunityItaly.Shared.ViewModels;
+﻿using Blazorise;
+using CommunityItaly.Shared.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -6,14 +7,9 @@ namespace CommunityItaly.Web.Components.People
 {
 	public partial class PersonModal : ComponentBase
 	{
-		[Parameter]
-		public bool IsOpen { get; set; }
-		
-		[Parameter]
-		public PersonUpdateViewModel PersonData { get; set; }
+		[Parameter] public PersonUpdateViewModel PersonData { get; set; } = new PersonUpdateViewModel();
 
-		[Parameter]
-		public EventCallback<bool> OnConfirm { get; set; }
+		private Modal modalRef;
 
 		public string MVP_Url { get; set; }
 
@@ -23,10 +19,12 @@ namespace CommunityItaly.Web.Components.People
 				MVP_Url = $"https://mvp.microsoft.com/it-it/PublicProfile/{PersonData.MVP_Code}";
 		}
 
-		async Task Confirm()
+		public void Close()
 		{
-			IsOpen = !IsOpen;
-			await OnConfirm.InvokeAsync(IsOpen);
+			modalRef.Hide();
+			PersonData = new PersonUpdateViewModel();
 		}
+
+		public void Open() => modalRef.Show();
 	}
 }

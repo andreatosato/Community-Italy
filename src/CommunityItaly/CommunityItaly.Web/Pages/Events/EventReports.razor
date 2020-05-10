@@ -1,71 +1,55 @@
-﻿@page "/Event/Reports"
-<h3>Reports</h3>
+﻿@page "/event/reports"
+@inherits ComponentBase
+
+<Row>
+	<Column ColumnSize="ColumnSize.Is4">
+		<DateEdit @bind-Date="Search.StartDate"></DateEdit>
+	</Column>
+	<Column ColumnSize="ColumnSize.Is4">
+		<DateEdit @bind-Date="Search.EndDate"></DateEdit>
+	</Column>
+	<Column ColumnSize="ColumnSize.Is2">
+		<Button Clicked="SearchEvents">Ricerca</Button>
+	</Column>
+	<Column ColumnSize="ColumnSize.Is2">
+		<Button Clicked="Export">Export</Button>
+	</Column>
+</Row>
+
+<Row>
+	@foreach (var e in ReportLists)
+	{
+		<Column ColumnSize="ColumnSize.IsHalf">
+			<Card>
+				<CardImage Source="@LinkViewModel.GetImageMedium(e.Logo).ToString()" Alt="Placeholder image">
+				</CardImage>
+				<CardBody>
+					<CardTitle Size="6">@e.Name</CardTitle>
+					<CardText>
+						<Button Clicked="@(() => OpenNewTabLink(e.BuyTicket))"><Icon Name="@IconAppName.EventSeat"></Icon></Button>
 
 
-@*<div class="mat-layout-grid">
-	<div class="mat-layout-grid-inner">
-		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-			<MatDatePicker Label="Start Date" @bind-Value="Search.StartDate" FullWidth="true" />
-		</div>
-		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-			<MatDatePicker Label="End Date" @bind-Value="Search.EndDate" FullWidth="true" />
-		</div>
-		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-2" style="text-align: right">
-			<MatButton Icon="@MatIconNames.Search" Raised="true" OnClick="SearchEvents">Ricerca</MatButton>
-		</div>
-		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-2" style="text-align: right">
-			<MatButton Icon="@MatIconNames.Import_export" Raised="true" OnClick="Export">Export</MatButton>
-		</div>
-	</div>
-</div>*@
-
-
-@*@foreach (var e in ReportLists)
-{
-	<MatCard class="demo-mat-card">
-		<MatCardContent>
-			<MatCardMedia Wide="true" ImageUrl="@LinkViewModel.GetImageMedium(e.Logo).ToString()" ></MatCardMedia>
-			<div class="demo-mat-card-content">
-				<MatHeadline6 class="demo-mat-card-clean-margin">
-					@e.Name
-				</MatHeadline6>
-				<MatBody2>
-					<MatTooltip Tooltip="Acquista il biglietto" Wrap="true">
-						<MatButton Link="@e.BuyTicket" Icon="@MatIconNames.Event_seat"/>
-					</MatTooltip>
-					<span>@e.StartDate.ToShortDateString()</span> - <span>@e.EndDate.ToShortDateString()</span>
-				</MatBody2>
-			</div>
-
-		</MatCardContent>
-		<MatCardActions>
-			@if (e.Community.Managers != null)
-			{
-				@foreach (var manager in e.Community.Managers)
-				{
-					<MatButton OnClick="@(() => OpenManagers(manager))" Icon="@MatIconNames.Person_pin" Label="@manager.Name"></MatButton>
-				}
-			}
-			<MatButton Link="@e.Community.WebSite.ToString()" Disabled="@(e.Community.WebSite == null)" Icon="@MatIconNames.Web">Community</MatButton>
-		</MatCardActions>
-	</MatCard>
-}
-
-@if (ManagerIsOpen)
-{
-	<CommunityItaly.Web.Components.People.PersonModal IsOpen="ManagerIsOpen" PersonData="ManagerSelected" OnConfirm="ManagerOnConfirm"></CommunityItaly.Web.Components.People.PersonModal>
-}*@
-
-<style>
-	.demo-mat-card {
-		max-width: 400px;
+						<span>@e.StartDate.ToShortDateString()</span> - <span>@e.EndDate.ToShortDateString()</span>
+					</CardText>
+				</CardBody>
+				<CardFooter>
+					@if (e.Community.Managers != null)
+					{
+						@foreach (var manager in e.Community.Managers)
+						{
+							<Button Clicked="@(() => OpenManagers(manager))">
+								<Icon Name="@IconAppName.PersonPin"></Icon> @manager.Name
+							</Button>
+						}
+					}
+					<Button Clicked="@(() => OpenNewTabLink(e.Community.WebSite.ToString()))" Disabled="@(e.Community.WebSite == null)">
+						<Icon Name="@IconAppName.Web"></Icon> Community
+					</Button>
+				</CardFooter>
+			</Card>
+		</Column>
 	}
+</Row>
 
-	.demo-mat-card-content {
-		padding: 1rem;
-	}
 
-	.demo-mat-card-clean-margin {
-		margin: 0px;
-	}
-</style>
+<PersonModal @ref="personRef" PersonData="ManagerSelected"></PersonModal>

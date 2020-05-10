@@ -120,7 +120,13 @@
 			<CardBody>
 				<Row>
 					<Column ColumnSize="ColumnSize.Is12">
-						<CommunitySelect @bind-CommunitySelected="EventViewModel.Community.ShortName"></CommunitySelect>
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.Community.ShortName))">
+							<CommunitySelect @bind-CommunitySelected="EventViewModel.Community.ShortName">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</CommunitySelect>
+						</Validation>
 					</Column>
 				</Row>
 			</CardBody>

@@ -12,5 +12,7 @@
 		public const string Edit = "edit";
 		public const string Delete = "delete";
 		public const string Link = "link";
+		public const string PersonPin = "person_pin";
+		public const string Web = "web";
 	}
 }

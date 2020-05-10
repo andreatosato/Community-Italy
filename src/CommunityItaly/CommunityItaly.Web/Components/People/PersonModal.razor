@@ -1,17 +1,30 @@
-﻿<MatDialog @bind-IsOpen="@IsOpen">
-	<MatDialogTitle>@PersonData.Name @PersonData.Surname</MatDialogTitle>
-	<MatDialogContent>
-		<img src="@LinkViewModel.GetImageMedium(PersonData.Picture).ToString()" />
-		<MatBody2>
+﻿<Modal @ref="modalRef">
+	<ModalBackdrop />
+	<ModalContent IsCentered="true" Size="ModalSize.ExtraLarge">
+		<ModalHeader>
+			<ModalTitle>@PersonData.Name @PersonData.Surname</ModalTitle>
+			<CloseButton Clicked="@Close" />
+		</ModalHeader>
+		<ModalBody>
+			
+			<img src="@LinkViewModel.GetImageMedium(PersonData.Picture).ToString()" />
 			@if (!string.IsNullOrEmpty(MVP_Url))
 			{
-				<MatIconButton Link="@MVP_Url" Target="_blank">
+				<a href="@MVP_Url" target="_blank">
 					<i class="fab fa-microsoft" aria-hidden="true"></i>
-				</MatIconButton>
+				</a>
 			}
-		</MatBody2>
-	</MatDialogContent>
-	<MatDialogActions>
-		<MatButton OnClick="@(async (e) => await Confirm())">Ok</MatButton>
-	</MatDialogActions>
-</MatDialog>
+			<Field>
+				<FieldLabel>Name</FieldLabel>
+				<TextEdit Placeholder="Enter name..." />
+			</Field>
+			<Field>
+				<FieldLabel>Surname</FieldLabel>
+				<TextEdit Placeholder="Enter surname..." />
+			</Field>
+		</ModalBody>
+		<ModalFooter>
+			<Button Color="Color.Primary" Clicked="@Close">Ok</Button>
+		</ModalFooter>
+	</ModalContent>
+</Modal>

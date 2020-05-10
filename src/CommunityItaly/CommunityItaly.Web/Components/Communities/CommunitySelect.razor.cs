@@ -9,14 +9,13 @@ namespace CommunityItaly.Web.Components.Communities
 {
 	public partial class CommunitySelect : ComponentBase
 	{
-		[Inject]
-		private IHttpServices Http { get; set; }
+		[Inject] IHttpServices Http { get; set; }
 
-		[Parameter]
-		public string CommunitySelected { get; set; }
+		[Parameter] public string CommunitySelected { get; set; }
 
-		[Parameter]
-		public EventCallback<string> CommunitySelectedChanged { get; set; }
+		[Parameter] public EventCallback<string> CommunitySelectedChanged { get; set; }
+
+		[Parameter] public RenderFragment Feedback { get; set; }
 
 		public List<CommunityUpdateViewModel> CommunitiesList { get; set; } = new List<CommunityUpdateViewModel>();
 
