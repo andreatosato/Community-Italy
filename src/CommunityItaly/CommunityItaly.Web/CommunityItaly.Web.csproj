@@ -8,26 +8,31 @@
 
   <ItemGroup>
     <Compile Remove="Components\People\**" />
-    <Compile Remove="Pages\Communities\**" />
     <Compile Remove="Pages\Reports\**" />
     <Content Remove="Components\People\**" />
-    <Content Remove="Pages\Communities\**" />
     <Content Remove="Pages\Reports\**" />
     <EmbeddedResource Remove="Components\People\**" />
-    <EmbeddedResource Remove="Pages\Communities\**" />
     <EmbeddedResource Remove="Pages\Reports\**" />
     <None Remove="Components\People\**" />
-    <None Remove="Pages\Communities\**" />
     <None Remove="Pages\Reports\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Communities\CommunityEdit.razor.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Components\DateRange.razor" />
     <Content Remove="Components\Person.razor" />
     <Content Remove="Pages\Articles.razor" />
+    <Content Remove="Pages\Communities\CommunityEdit.razor" />
     <Content Remove="Pages\Counter.razor" />
     <Content Remove="Pages\FetchData.razor" />
     <Content Remove="Pages\People.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Components\People\PersonSelect.razor.cs" />
   </ItemGroup>
 		
   <ItemGroup>
@@ -49,12 +54,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\People\" />
     <Folder Include="wwwroot\default\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Components\Communities\CommunitySelect.razor" />
+    <None Include="Components\People\PersonSelect.razor" />
+    <None Include="Pages\Communities\CommunitiyList.razor" />
     <None Include="Pages\Events\EventList.razor" />
   </ItemGroup>
 </Project>

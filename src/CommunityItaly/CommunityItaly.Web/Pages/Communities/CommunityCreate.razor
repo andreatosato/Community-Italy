@@ -1,28 +1,59 @@
-﻿@page "/CommunityCreate"
+﻿@page "/community/create"
+@inherits Components.ValidationComponent
 
-<h3>Community Create</h3>
 
-<EditForm Model="CommunityViewModel" OnValidSubmit="Success">
-	<DataAnnotationsValidator />
-	<ValidationSummary />
-	<div class="mat-layout-grid">
-		<div class="mat-layout-grid-inner">
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-				<MatTextField Label="Nome evento" @bind-Value="CommunityViewModel.Name" FullWidth="true" />
-				<ValidationMessage For="@(() => CommunityViewModel.Name)" />
-			</div>
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-				<MatTextField Label="Acquista biglietto" Icon="@MatIconNames.Web" IconTrailing="true" @bind-Value="CommunityViewModel.WebSite" FullWidth="true" />
-				<ValidationMessage For="@(() => CommunityViewModel.WebSite)" />
-			</div>
-			
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-				<MatFileUpload OnChange="@FilesReady" Label="Carica l'immagine dell'evento"></MatFileUpload>
-			</div>
-			
-			<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12" style="text-align: center">
-				<MatButton Icon="@MatIconNames.Save" Raised="true" Type="submit">Save</MatButton>
-			</div>
-		</div>
-	</div>
+
+<EditForm Model="CreateViewModel" OnValidSubmit="Success">
+	<Validations @ref="Validations" Mode="ValidationMode">
+		<Card>
+			<CardHeader><CardTitle Size="5">Community</CardTitle></CardHeader>
+			<CardBody>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is6">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(CommunityViewModel.Name))">
+							<TextEdit Placeholder="Nome community" @bind-Text="CreateViewModel.Name">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</TextEdit>
+						</Validation>
+					</Column>
+					<Column ColumnSize="ColumnSize.Is6">
+						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(CommunityViewModel.WebSite))">
+							<TextEdit Placeholder="Sito web" @bind-Text="CreateViewModel.WebSite">
+								<Feedback>
+									<ValidationError />
+								</Feedback>
+							</TextEdit>
+						</Validation>
+					</Column>
+				</Row>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is12">
+						<PersonSelect></PersonSelect>
+					</Column>
+				</Row>
+				<Row>
+					<Column ColumnSize="ColumnSize.Is6">
+						<FileEdit Changed="@FilesReady" Filter=".jpg, .png, .gif"></FileEdit>
+					</Column>
+					<Column ColumnSize="ColumnSize.Is6">
+						@if (!string.IsNullOrEmpty(ImageUploaded))
+						{
+							<Figure Size="FigureSize.Is256x256" style="text-align:center">
+								<FigureImage Source="@ImageUploaded" AlternateText="@(CreateViewModel.Name)" Style="border-color:black; border:2px; max-width:256px;max-height:256px;" />
+								<FigureCaption>@CreateViewModel.Name</FigureCaption>
+							</Figure>
+						}
+					</Column>
+				</Row>
+			</CardBody>
+		</Card>
+		<Row>
+			<Column ColumnSize="ColumnSize.Is12" style="text-align: center">
+				<Button Type="ButtonType.Submit" Color="Color.Primary"><Icon Name="IconAppName.Save" /> Save</Button>
+			</Column>
+		</Row>
+	</Validations>
 </EditForm>
+

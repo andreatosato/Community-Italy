@@ -17,13 +17,11 @@ namespace CommunityItaly.Web.Pages.Events
 		[Inject] IHttpServices Http { get; set; }
 		[Inject] ISnackbarService SnackbarService { get; set; }
 		[Inject] JavaScriptServices JSService { get; set; }
+		public Modal personRef;
 		public string MVP_Url { get; set; }
-
-		private Modal personRef;
 		public SearchReport Search { get; set; }
 
 		public List<EventViewModelReadOnly> ReportLists { get; set; } = new List<EventViewModelReadOnly>();
-		bool ManagerIsOpen { get; set; } = false;
 		PersonUpdateViewModel ManagerSelected { get; set; } = new PersonUpdateViewModel();
 
 		protected override void OnInitialized()
@@ -77,7 +75,7 @@ namespace CommunityItaly.Web.Pages.Events
 		public void Close()
 		{
 			personRef.Hide();
-			ManagerSelected = new PersonUpdateViewModel();
+			ManagerSelected = new PersonSelectViewModel();
 		}
 
 	}

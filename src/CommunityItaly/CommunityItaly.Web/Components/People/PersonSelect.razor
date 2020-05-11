@@ -1,7 +1,15 @@
-﻿<MatSelectValue Items="@PeopleToSelect" TValue="PersonUpdateViewModel" TItem="PersonUpdateViewModel"
-				ValueChanged="PersonSelectedChanged" ValueExpression="@(() => PersonSelected)" ValueSelector="@(i=>i)"
-				HelperTextPersistent="false" Label="Seleziona la persona">
-	<ItemTemplate>
-		<img src="@ImageUrl(context.Picture)" />&nbsp;<span>@context.Name @context.Surname</span>
-	</ItemTemplate>
-</MatSelectValue>
+﻿<DataGrid TItem="PersonSelectViewModel"
+			Data="@PeopleToSelect"
+			@bind-SelectedRow="@PersonSelected"
+			EditMode="DataGridEditMode.Form"
+			Editable="true"
+			RowSelectable="SelectRow">
+	<DataGridSelectColumn TItem="PersonSelectViewModel" Field="@nameof(PersonSelectViewModel.IsSelected)" Editable="true" Caption="Seleziona" Sortable="true"></DataGridSelectColumn>
+	<DataGridColumn TItem="PersonSelectViewModel" Field="@nameof(PersonSelectViewModel.Name)" Editable="false" Caption="Nome" Sortable="false" />
+	<DataGridColumn TItem="PersonSelectViewModel" Field="@nameof(PersonSelectViewModel.Surname)" Editable="false" Caption="Cognome" Sortable="false" />
+	<DataGridColumn TItem="PersonSelectViewModel" Field="@nameof(PersonSelectViewModel.Picture)" Editable="false" Caption="#">
+		<DisplayTemplate>
+			<img src="@LinkViewModel.GetImageIcon((context as PersonSelectViewModel)?.Picture).ToString()" />
+		</DisplayTemplate>
+	</DataGridColumn>
+</DataGrid>

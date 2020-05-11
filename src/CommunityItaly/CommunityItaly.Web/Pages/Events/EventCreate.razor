@@ -2,7 +2,7 @@
 @inherits Components.ValidationComponent
 
 
-<EditForm Model="EventViewModel" OnValidSubmit="Success">
+<EditForm Model="CreateViewModel" OnValidSubmit="Success">
 	<Validations @ref="Validations" Mode="ValidationMode">
 		<Card>
 			<CardHeader><CardTitle Size="5">Evento</CardTitle></CardHeader>
@@ -10,7 +10,7 @@
 				<Row>
 					<Column ColumnSize="ColumnSize.Is6">
 						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.Name))">
-							<TextEdit Placeholder="Nome evento" @bind-Text="EventViewModel.Name">
+							<TextEdit Placeholder="Nome evento" @bind-Text="CreateViewModel.Name">
 								<Feedback>
 									<ValidationError />
 								</Feedback>
@@ -21,7 +21,7 @@
 						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.BuyTicket))">
 							<Addons>
 								<Addon AddonType="AddonType.Body">
-									<TextEdit Placeholder="Acquista biglietto" @bind-Text="EventViewModel.BuyTicket">
+									<TextEdit Placeholder="Acquista biglietto" @bind-Text="CreateViewModel.BuyTicket">
 										<Feedback>
 											<ValidationError />
 										</Feedback>
@@ -35,7 +35,7 @@
 				<Row>
 					<Column ColumnSize="ColumnSize.Is4">
 						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.StartDate))">
-							<DateEdit TValue="DateTime" @bind-Date="@EventViewModel.StartDate">
+							<DateEdit TValue="DateTime" @bind-Date="@CreateViewModel.StartDate">
 								<Feedback>
 									<ValidationError />
 								</Feedback>
@@ -47,7 +47,7 @@
 					</Column>
 					<Column ColumnSize="ColumnSize.Is4">
 						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.EndDate))">
-							<DateEdit TValue="DateTime" @bind-Date="@EventViewModel.EndDate">
+							<DateEdit TValue="DateTime" @bind-Date="@CreateViewModel.EndDate">
 								<Feedback>
 									<ValidationError />
 								</Feedback>
@@ -66,15 +66,15 @@
 						@if (!string.IsNullOrEmpty(ImageUploaded))
 						{
 							<Figure Size="FigureSize.Is256x256" style="text-align:center">
-								<FigureImage Source="@ImageUploaded" AlternateText="@(EventViewModel.CommunityName)" Style="border-color:black; border:2px; max-width:256px;max-height:256px;" />
-								<FigureCaption>@EventViewModel.CommunityName</FigureCaption>
+								<FigureImage Source="@ImageUploaded" AlternateText="@(CreateViewModel.CommunityName)" Style="border-color:black; border:2px; max-width:256px;max-height:256px;" />
+								<FigureCaption>@CreateViewModel.CommunityName</FigureCaption>
 							</Figure>
 						}
-						else if (EventViewModel.Logo != null)
+						else if (CreateViewModel.Logo != null)
 						{
 							<Figure Size="FigureSize.Is256x256" style="text-align:center">
-								<FigureImage Source="@LinkViewModel.GetImageMedium(EventViewModel.Logo).ToString()" AlternateText="@(EventViewModel.CommunityName)" Style="border-color:black; border:2px;" />
-								<FigureCaption>@EventViewModel.CommunityName</FigureCaption>
+								<FigureImage Source="@LinkViewModel.GetImageMedium(CreateViewModel.Logo).ToString()" AlternateText="@(CreateViewModel.CommunityName)" Style="border-color:black; border:2px;" />
+								<FigureCaption>@CreateViewModel.CommunityName</FigureCaption>
 							</Figure>
 						}
 					</Column>
@@ -87,7 +87,7 @@
 				<Row>
 					<Column ColumnSize="ColumnSize.Is12">
 						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.CFP.Url))">
-							<TextEdit Placeholder="Nome evento" @bind-Text="EventViewModel.CFP.Url">
+							<TextEdit Placeholder="Nome evento" @bind-Text="CreateViewModel.CFP.Url">
 								<Feedback>
 									<ValidationError />
 								</Feedback>
@@ -98,7 +98,7 @@
 				<Row>
 					<Column ColumnSize="ColumnSize.Is4">
 						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.CFP.StartDate))">
-							<DateEdit TValue="DateTime" @bind-Date="@EventViewModel.CFP.StartDate">
+							<DateEdit TValue="DateTime" @bind-Date="@CreateViewModel.CFP.StartDate">
 								<Feedback>
 									<ValidationError />
 								</Feedback>
@@ -110,7 +110,7 @@
 					</Column>
 					<Column ColumnSize="ColumnSize.Is4">
 						<Validation Validator="async e => await ValidateFieldAsync(e, nameof(EventViewModelReadOnly.CFP.EndDate))">
-							<DateEdit TValue="DateTime" @bind-Date="@EventViewModel.CFP.EndDate">
+							<DateEdit TValue="DateTime" @bind-Date="@CreateViewModel.CFP.EndDate">
 								<Feedback>
 									<ValidationError />
 								</Feedback>
@@ -128,7 +128,7 @@
 			<CardBody>
 				<Row>
 					<Column ColumnSize="ColumnSize.Is12">
-						<CommunitySelect @bind-CommunitySelected="EventViewModel.CommunityName"></CommunitySelect>
+						<CommunitySelect @bind-CommunitySelected="CreateViewModel.CommunityName"></CommunitySelect>
 					</Column>
 				</Row>
 			</CardBody>

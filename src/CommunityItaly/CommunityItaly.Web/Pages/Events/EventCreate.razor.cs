@@ -18,7 +18,7 @@ namespace CommunityItaly.Web.Pages.Events
 		[Inject] IValidator<EventViewModel> Validator { get; set; }
 		[Inject] ISnackbarService SnackbarService { get; set; }
 
-		public EventViewModel EventViewModel { get; set; }
+		public EventViewModel CreateViewModel { get; set; }
 
 		TimeSpan StartHour { get; set; }
 		TimeSpan EndHour { get; set; }
@@ -29,32 +29,32 @@ namespace CommunityItaly.Web.Pages.Events
 		protected override async Task OnInitializedAsync()
 		{
 			await base.OnInitializedAsync();
-			EventViewModel = new EventViewModel()
+			CreateViewModel = new EventViewModel()
 			{
 				Id = Guid.NewGuid().ToString("N"),
 				CFP = new CallForSpeakerViewModel()
 			};
-			StartHour = EventViewModel.StartDate.TimeOfDay;
-			EndHour = EventViewModel.EndDate.TimeOfDay;
-			if (EventViewModel.CFP == null)
-				EventViewModel.CFP = new CallForSpeakerViewModel();
+			StartHour = CreateViewModel.StartDate.TimeOfDay;
+			EndHour = CreateViewModel.EndDate.TimeOfDay;
+			if (CreateViewModel.CFP == null)
+				CreateViewModel.CFP = new CallForSpeakerViewModel();
 			else
 			{
-				StartCFPHour = EventViewModel.CFP.StartDate.TimeOfDay;
-				EndCFPHour = EventViewModel.CFP.EndDate.TimeOfDay;
+				StartCFPHour = CreateViewModel.CFP.StartDate.TimeOfDay;
+				EndCFPHour = CreateViewModel.CFP.EndDate.TimeOfDay;
 			}
 			AppStore.EventImage = null;
 		}
 
 		async Task Success()
 		{
-			var result = await Http.CreateEvent(EventViewModel).ConfigureAwait(false);
+			var result = await Http.CreateEvent(CreateViewModel).ConfigureAwait(false);
 			if (result.IsSuccessStatusCode)
 			{
 				string resultId = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
 				if (AppStore.EventImage != null)
 				{
-					await Http.UploadEventImage(EventViewModel.Id, AppStore.EventImage).ConfigureAwait(false);
+					await Http.UploadEventImage(CreateViewModel.Id, AppStore.EventImage).ConfigureAwait(false);
 				}
 				SnackbarService.Show("Evento sottomesso", SnackbarType.Info);
 			}
@@ -83,36 +83,36 @@ namespace CommunityItaly.Web.Pages.Events
 		void StartDateTimeChanged(TimeSpan time)
 		{
 			StartHour = time;
-			double seconds = StartHour.TotalSeconds - EventViewModel.StartDate.TimeOfDay.TotalSeconds;
-			EventViewModel.StartDate = EventViewModel.StartDate.AddSeconds(seconds);
+			double seconds = StartHour.TotalSeconds - CreateViewModel.StartDate.TimeOfDay.TotalSeconds;
+			CreateViewModel.StartDate = CreateViewModel.StartDate.AddSeconds(seconds);
 			StateHasChanged();
 		}
 		void EndDateTimeChanged(TimeSpan time)
 		{
 			EndHour = time;
-			double seconds = EndHour.TotalSeconds - EventViewModel.EndDate.TimeOfDay.TotalSeconds;
-			EventViewModel.EndDate = EventViewModel.EndDate.AddSeconds(seconds);
+			double seconds = EndHour.TotalSeconds - CreateViewModel.EndDate.TimeOfDay.TotalSeconds;
+			CreateViewModel.EndDate = CreateViewModel.EndDate.AddSeconds(seconds);
 			StateHasChanged();
 		}
 
 		void StartDateCFPTimeChanged(TimeSpan time)
 		{
 			StartCFPHour = time;
-			double seconds = StartCFPHour.TotalSeconds - EventViewModel.CFP.StartDate.TimeOfDay.TotalSeconds;
-			EventViewModel.CFP.StartDate = EventViewModel.CFP.StartDate.AddSeconds(seconds);
+			double seconds = StartCFPHour.TotalSeconds - CreateViewModel.CFP.StartDate.TimeOfDay.TotalSeconds;
+			CreateViewModel.CFP.StartDate = CreateViewModel.CFP.StartDate.AddSeconds(seconds);
 			StateHasChanged();
 		}
 		void EndDateTimeCFPChanged(TimeSpan time)
 		{
 			EndCFPHour = time;
-			double seconds = EndHour.TotalSeconds - EventViewModel.CFP.EndDate.TimeOfDay.TotalSeconds;
-			EventViewModel.CFP.EndDate = EventViewModel.CFP.EndDate.AddSeconds(seconds);
+			double seconds = EndHour.TotalSeconds - CreateViewModel.CFP.EndDate.TimeOfDay.TotalSeconds;
+			CreateViewModel.CFP.EndDate = CreateViewModel.CFP.EndDate.AddSeconds(seconds);
 			StateHasChanged();
 		}
 
 		private async Task ValidateFieldAsync(ValidatorEventArgs args, string fieldName)
 		{
-			var validationResult = await Validator.ValidateAsync(EventViewModel, default, fieldName);
+			var validationResult = await Validator.ValidateAsync(CreateViewModel, default, fieldName);
 			if (!validationResult.IsValid)
 				SetValidationState(args, validationResult);
 		}

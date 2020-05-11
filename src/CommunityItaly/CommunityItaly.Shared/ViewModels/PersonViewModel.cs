@@ -27,4 +27,9 @@ namespace CommunityItaly.Shared.ViewModels
             };
         }
     }
+
+    public class PersonSelectViewModel : PersonUpdateViewModel
+	{
+        public bool IsSelected { get; set; }
+	}
 }

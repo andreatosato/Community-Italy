@@ -1,39 +1,31 @@
-﻿@page "/communities"
-<div class="mat-layout-grid">
-	<div class="mat-layout-grid-inner">
-		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-			<MatH6>Lista Community</MatH6>
-		</div>
-		<div class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="text-align:right;">
-			<MatButton OnClick="Create" Label="Crea community" Icon="@MatIconNames.Create"></MatButton>
-		</div>
-	</div>
-</div>
+﻿@page "/community"
 
-<MatTable Items="@CommunityViewModels" Striped="true" ShowPaging="false" class="mat-elevation-z5">
-	<MatTableHeader>
-		<th width="40%">Name</th>
-		<th width="25%">WebSite</th>
-		<th width="25%">Managers</th>
-		<th>Actions</th>
-	</MatTableHeader>
-	<MatTableRow>
-		<td>@context.Name</td>
-		<td><MatButton Link="@context.WebSite.ToString()" Icon="@MatIconNames.Web"></MatButton></td>
-		<td>@context.Managers?.Count()</td>
-		<td>
-			<div style="display:block;">
-				<MatIconButton OnClick="@(() => Edit(context))">
-					<MatIcon>@MatIconNames.Edit</MatIcon>
-				</MatIconButton>
-
-				<MatIconButton OnClick="@(() => Delete(context.ShortName))">
-					<MatIcon>@MatIconNames.Delete</MatIcon>
-				</MatIconButton>
-			</div>
-		</td>
-	</MatTableRow>
-</MatTable>
-<div>
-	<MatPaginator Length="@Total" PageSize="@PageSize" Page="@OnPage"></MatPaginator>
-</div>
+<Row>
+	<Column ColumnSize="ColumnSize.Is12">
+		<div style="text-align:right;">
+			<Button Clicked="Create"><Icon Name="IconAppName.Create"></Icon> Crea community</Button>
+		</div>
+	</Column>
+</Row>
+<Row>
+	<Column ColumnSize="ColumnSize.Is12">
+		<DataGrid TItem="CommunityUpdateViewModel" Data="@CommunityViewModels" ReadData="@LoadDataAsync" TotalItems="@Total"
+				  ShowPager="true" PageSize="@PageSize" CurrentPage="@PageIndex" Editable="false" Striped="true">
+			<DataGridColumns>
+				<DataGridColumn TItem="CommunityUpdateViewModel" Field="@nameof(CommunityUpdateViewModel.Name)" Caption="Nome" Sortable="false"></DataGridColumn>
+				<DataGridDateColumn TItem="CommunityUpdateViewModel" Field="@nameof(CommunityUpdateViewModel.WebSite)" Caption="Website" Sortable="false"></DataGridDateColumn>
+				<DataGridColumn TItem="CommunityUpdateViewModel" Field="@nameof(CommunityUpdateViewModel.Managers)" Caption="Managers" Editable="false">
+					<DisplayTemplate>
+						<Badge Color="Color.Primary">@(( context as CommunityUpdateViewModel)?.Managers.Count)</Badge>
+					</DisplayTemplate>
+				</DataGridColumn>
+				<DataGridColumn TItem="CommunityUpdateViewModel" Field="@nameof(CommunityUpdateViewModel.Confirmed)" Caption="#" Sortable="false">
+					<DisplayTemplate>
+						<Link Clicked="@(() => Edit(context))"><Icon Name="IconAppName.Edit"></Icon></Link>
+						@*<Link Clicked="@(() => Delete(context.ShortName))"><Icon Name="IconAppName.Delete"></Icon></Link>*@
+					</DisplayTemplate>
+				</DataGridColumn>
+			</DataGridColumns>
+		</DataGrid>
+	</Column>
+</Row>
