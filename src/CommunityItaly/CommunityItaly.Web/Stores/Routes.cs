@@ -9,7 +9,7 @@
 		public static string EventCreate() => $"/{BreadCrum.EventCreate}";
 
 		public static string CommunityList() => $"/{BreadCrum.CommunityList}";
-		public static string CommunityEdit(string shortname) => $"/{BreadCrum.CommunityCreate}/{shortname}";
+		public static string CommunityEdit(string shortname) => $"/{BreadCrum.CommunityEdit}/{shortname}";
 		public static string CommunityCreate() => $"/{BreadCrum.CommunityCreate}";
 
 		public static string EventReports() => $"/{BreadCrum.EventReport}";
